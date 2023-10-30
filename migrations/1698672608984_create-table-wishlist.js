@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 
 exports.up = (pgm) => {
-    pgm.createTable('wishlist', {
+    pgm.createTable('wishlists', {
         id: {
             type: 'VARCHAR(50)',
             primaryKey: true,
@@ -11,9 +11,9 @@ exports.up = (pgm) => {
             notNull: true,
         }
     });
-    pgm.addConstraint('wishlist', 'fk_wishlist.user_id_user.id', 'FOREIGN KEY(user_id) REFERENCES "user"(id) ON DELETE CASCADE');
+    pgm.addconstraint('wishlists', 'fk_wishlists.user_id_user.id', 'FOREIGN KEY(user_id) REFERENCES "user"(id) ON DELETE CASCADE');
 };
   
 exports.down = (pgm) => {
-    pgm.dropTable('wishlist');
+    pgm.dropTable('wishlists');
 };

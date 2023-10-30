@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 
 exports.up = (pgm) => {
-    pgm.createTable('marketplace_item', {
+    pgm.createTable('marketplace_items', {
         id: {
             type: 'VARCHAR(50)',
             primaryKey: true,
@@ -50,5 +50,5 @@ exports.up = (pgm) => {
 };
   
 exports.down = (pgm) => {
-    pgm.dropTable('marketplace_item');
+    pgm.dropTable('marketplace_items');
 };

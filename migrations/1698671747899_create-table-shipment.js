@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 
 exports.up = (pgm) => {
-    pgm.createTable('shipment', {
+    pgm.createTable('shipments', {
         id: {
             type: 'VARCHAR(50)',
             primaryKey: true,
@@ -18,7 +18,7 @@ exports.up = (pgm) => {
             type: 'TEXT',
             notNull: true,
         },
-        tarif:{
+        price:{
             type: 'float',
             notNull: true,
         },
@@ -30,5 +30,5 @@ exports.up = (pgm) => {
 };
   
 exports.down = (pgm) => {
-    pgm.dropTable('shipment');
+    pgm.dropTable('shipments');
 };

@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 
 exports.up = (pgm) => {
-    pgm.createTable('plant', {
+    pgm.createTable('plants', {
         id: {
             type: 'VARCHAR(50)',
             primaryKey: true,
@@ -24,10 +24,10 @@ exports.up = (pgm) => {
         },
     });
 
-    pgm.addConstraint('plant', 'fk_plant.garden_id_garden.id', 'FOREIGN KEY(garden_id) REFERENCES garden(id) ON DELETE CASCADE');
-    pgm.addConstraint('plant', 'fk_plant.user_id_users.id', 'FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE');
+    pgm.addconstraint('plants', 'fk_plants.garden_id_garden.id', 'FOREIGN KEY(garden_id) REFERENCES garden(id) ON DELETE CASCADE');
+    pgm.addconstraint('plants', 'fk_plants.user_id_user.id', 'FOREIGN KEY(user_id) REFERENCES user(id) ON DELETE CASCADE');
 };
   
 exports.down = (pgm) => {
-    pgm.dropTable('plant');
+    pgm.dropTable('plants');
 };
