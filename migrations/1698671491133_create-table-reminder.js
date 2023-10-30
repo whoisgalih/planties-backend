@@ -20,7 +20,7 @@ exports.up = (pgm) => {
         },
     });
 
-    pgm.addConstraint('reminders', 'fk_reminders.garden_id_garden.id', 'FOREIGN KEY(garden_id) REFERENCES garden(id) ON DELETE CASCADE');
+    pgm.addConstraint('reminders', 'fk_reminders.garden_id_garden.id', 'FOREIGN KEY(garden_id) REFERENCES gardens(id) ON DELETE CASCADE');
 };
   
 exports.down = (pgm) => {

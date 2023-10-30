@@ -15,7 +15,7 @@ exports.up = (pgm) => {
             notNull: true,
         },
     });
-    pgm.addConstraint('order_status', 'fk_order_status.transaction_id_transaction.id', 'FOREIGN KEY(transaction_id) REFERENCES "transaction"(id) ON DELETE CASCADE');
+    pgm.addConstraint('order_status', 'fk_order_status.transaction_id_transaction.id', 'FOREIGN KEY(transaction_id) REFERENCES "transactions"(id) ON DELETE CASCADE');
 };
   
 exports.down = (pgm) => {

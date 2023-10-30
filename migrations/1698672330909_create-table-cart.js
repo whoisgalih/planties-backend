@@ -11,7 +11,7 @@ exports.up = (pgm) => {
             notNull: true,
         }
     });
-    pgm.addConstraint('carts', 'fk_carts.user_id_user.id', 'FOREIGN KEY(user_id) REFERENCES "user"(id) ON DELETE CASCADE');
+    pgm.addConstraint('carts', 'fk_carts.user_id_user.id', 'FOREIGN KEY(user_id) REFERENCES "users"(id) ON DELETE CASCADE');
 };
   
 exports.down = (pgm) => {
