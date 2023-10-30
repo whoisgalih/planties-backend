@@ -11,7 +11,7 @@ exports.up = (pgm) => {
             notNull: true,
         }
     });
-    pgm.addconstraint('wishlists', 'fk_wishlists.user_id_user.id', 'FOREIGN KEY(user_id) REFERENCES "user"(id) ON DELETE CASCADE');
+    pgm.addConstraint('wishlists', 'fk_wishlists.user_id_user.id', 'FOREIGN KEY(user_id) REFERENCES "user"(id) ON DELETE CASCADE');
 };
   
 exports.down = (pgm) => {
