@@ -14,7 +14,7 @@ class UsersHandler {
     const response = h.response({
       status: 'success',
       data: {
-        user: addedUser,
+        addedUser,
       },
     });
     response.code(201);
