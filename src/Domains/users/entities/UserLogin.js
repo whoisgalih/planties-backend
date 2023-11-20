@@ -2,18 +2,18 @@ class UserLogin {
   constructor(payload) {
     this._verifyPayload(payload);
 
-    this.username = payload.username;
+    this.email = payload.email;
     this.password = payload.password;
   }
 
   _verifyPayload(payload) {
-    const { username, password } = payload;
+    const { email, password } = payload;
 
-    if (!username || !password) {
+    if (!email || !password) {
       throw new Error('USER_LOGIN.NOT_CONTAIN_NEEDED_PROPERTY');
     }
 
-    if (typeof username !== 'string' || typeof password !== 'string') {
+    if (typeof email !== 'string' || typeof password !== 'string') {
       throw new Error('USER_LOGIN.NOT_MEET_DATA_TYPE_SPECIFICATION');
     }
   }
