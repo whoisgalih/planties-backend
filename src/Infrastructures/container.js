@@ -10,8 +10,10 @@ const pool = require('./database/postgres/pool');
 
 // service (repository, helper, manager, etc)
 const UserRepository = require('../Domains/users/UserRepository');
+const OxygenRepository = require('../Domains/oxygen/OxygenRepository');
 const PasswordHash = require('../Applications/security/PasswordHash');
 const UserRepositoryPostgres = require('./repository/UserRepositoryPostgres');
+const OxygenRepositoryPostgres = require('./repository/OxygenRepositoryPostgres');
 const BcryptPasswordHash = require('./security/BcryptPasswordHash');
 
 // use case
@@ -76,6 +78,20 @@ container.register([
       ],
     },
   },
+  {
+    key: OxygenRepository.name,
+    Class: OxygenRepositoryPostgres,
+    parameter: {
+      dependencies: [
+        {
+          concrete: pool,
+        },
+        {
+          concrete: nanoid,
+        },
+      ],
+    },
+  },
 ]);
 
 // registering use cases
@@ -89,6 +105,10 @@ container.register([
         {
           name: 'userRepository',
           internal: UserRepository.name,
+        },
+        {
+          name: 'oxygenRepository',
+          internal: OxygenRepository.name,
         },
         {
           name: 'passwordHash',

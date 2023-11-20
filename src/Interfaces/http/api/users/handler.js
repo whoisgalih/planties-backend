@@ -8,14 +8,13 @@ class UsersHandler {
   }
 
   async postUserHandler(request, h) {
-    console.log(request.payload);
     const addUserUseCase = this._container.getInstance(AddUserUseCase.name);
     const addedUser = await addUserUseCase.execute(request.payload);
 
     const response = h.response({
       status: 'success',
       data: {
-        addedUser,
+        user: addedUser,
       },
     });
     response.code(201);
