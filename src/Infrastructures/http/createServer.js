@@ -2,8 +2,11 @@ const Hapi = require('@hapi/hapi');
 const Jwt = require('@hapi/jwt');
 const ClientError = require('../../Commons/exceptions/ClientError');
 const DomainErrorTranslator = require('../../Commons/exceptions/DomainErrorTranslator');
+
+// API
 const users = require('../../Interfaces/http/api/users');
 const authentications = require('../../Interfaces/http/api/authentications');
+const gardens = require('../../Interfaces/http/api/gardens');
 
 const createServer = async (container) => {
   const server = Hapi.server({
@@ -45,6 +48,10 @@ const createServer = async (container) => {
     },
     {
       plugin: authentications,
+      options: { container },
+    },
+    {
+      plugin: gardens,
       options: { container },
     },
   ]);
