@@ -18,6 +18,10 @@ class GardenRepository {
   async getGardenById(id) {
     throw new Error('GARDEN_REPOSITORY.METHOD_NOT_IMPLEMENTED');
   }
+
+  async deleteGardenById(id) {
+    throw new Error('GARDEN_REPOSITORY.METHOD_NOT_IMPLEMENTED');
+  }
 }
 
 module.exports = GardenRepository;

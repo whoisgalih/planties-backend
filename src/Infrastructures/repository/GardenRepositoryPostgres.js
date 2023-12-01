@@ -70,7 +70,18 @@ class GardenRepositoryPostgres extends GardenRepository {
 
     const result = await this._pool.query(query);
 
-    return result.rows[0];
+    return new AddedGarden({ ...result.rows[0] });
+  }
+
+  async deleteGardenById(id) {
+    const query = {
+      text: 'DELETE FROM gardens WHERE id = $1 RETURNING id, user_id, name, type',
+      values: [id],
+    };
+
+    const result = await this._pool.query(query);
+
+    return new AddedGarden({ ...result.rows[0] });
   }
 }
 
