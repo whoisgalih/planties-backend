@@ -1,4 +1,4 @@
-const AddGarden = require('../../Domains/garden/entities/AddGarden');
+const AddGarden = require('../../Domains/gardens/entities/AddGarden');
 
 class AddGardenUseCase {
   constructor({ gardenRepository }) {
