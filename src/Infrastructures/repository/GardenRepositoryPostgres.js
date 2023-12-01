@@ -1,6 +1,9 @@
 const GardenRepository = require('../../Domains/garden/GardenRepository');
 const AddedGarden = require('../../Domains/garden/entities/AddedGarden');
 
+const NotFoundError = require('../../Commons/exceptions/NotFoundError');
+const AuthorizationError = require('../../Commons/exceptions/AuthorizationError');
+
 class GardenRepositoryPostgres extends GardenRepository {
   constructor(pool, idGenerator) {
     super();
@@ -30,6 +33,44 @@ class GardenRepositoryPostgres extends GardenRepository {
     const result = await this._pool.query(query);
 
     return result.rows;
+  }
+
+  async verifyIfGardenExists(id) {
+    console.log(id);
+    const query = {
+      text: 'SELECT * FROM gardens WHERE id = $1',
+      values: [id],
+    };
+
+    const result = await this._pool.query(query);
+
+    if (!result.rowCount) {
+      throw new NotFoundError('garden tidak ditemukan');
+    }
+  }
+
+  async verifyGardenOwner(user_id, garden_id) {
+    const query = {
+      text: 'SELECT * FROM gardens WHERE id = $1 AND user_id = $2',
+      values: [garden_id, user_id],
+    };
+
+    const result = await this._pool.query(query);
+
+    if (!result.rowCount) {
+      throw new AuthorizationError('Anda bukan pemilik garden ini');
+    }
+  }
+
+  async getGardenById(id) {
+    const query = {
+      text: 'SELECT * FROM gardens WHERE id = $1',
+      values: [id],
+    };
+
+    const result = await this._pool.query(query);
+
+    return result.rows[0];
   }
 }
 

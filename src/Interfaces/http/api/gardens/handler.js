@@ -1,5 +1,6 @@
 const AddGardenUseCase = require('../../../../Applications/use_case/AddGardenUseCase');
 const GetGardensUseCase = require('../../../../Applications/use_case/GetGardensUseCase');
+const GetGardenByIdUseCase = require('../../../../Applications/use_case/GetGardenByIdUseCase');
 
 class GardensHandler {
   constructor(container) {
@@ -7,6 +8,7 @@ class GardensHandler {
 
     this.postGardenHandler = this.postGardenHandler.bind(this);
     this.getGardensHandler = this.getGardensHandler.bind(this);
+    this.getGardenByIdHandler = this.getGardenByIdHandler.bind(this);
   }
 
   async postGardenHandler(request, h) {
@@ -38,6 +40,26 @@ class GardensHandler {
       status: 'success',
       data: {
         gardens,
+      },
+    });
+    response.code(200);
+    return response;
+  }
+
+  async getGardenByIdHandler(request, h) {
+    const getGardenByIdUseCase = await this._container.getInstance(GetGardenByIdUseCase.name);
+
+    console.log('getGardenByIdHandler');
+
+    const { id: user_id } = request.auth.credentials;
+    const { id } = request.params;
+
+    const garden = await getGardenByIdUseCase.execute({ user_id, id });
+
+    const response = h.response({
+      status: 'success',
+      data: {
+        garden,
       },
     });
     response.code(200);

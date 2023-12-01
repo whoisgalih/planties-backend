@@ -29,6 +29,7 @@ const LogoutUserUseCase = require('../Applications/use_case/LogoutUserUseCase');
 const RefreshAuthenticationUseCase = require('../Applications/use_case/RefreshAuthenticationUseCase');
 const AddGardenUseCase = require('../Applications/use_case/AddGardenUseCase');
 const GetGardensUseCase = require('../Applications/use_case/GetGardensUseCase');
+const GetGardenByIdUseCase = require('../Applications/use_case/GetGardenByIdUseCase');
 
 // creating container
 const container = createContainer();
@@ -206,6 +207,19 @@ container.register([
   {
     key: GetGardensUseCase.name,
     Class: GetGardensUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        {
+          name: 'gardenRepository',
+          internal: GardenRepository.name,
+        },
+      ],
+    },
+  },
+  {
+    key: GetGardenByIdUseCase.name,
+    Class: GetGardenByIdUseCase,
     parameter: {
       injectType: 'destructuring',
       dependencies: [
