@@ -10,9 +10,13 @@ const pool = require('./database/postgres/pool');
 
 // service (repository, helper, manager, etc)
 const UserRepository = require('../Domains/users/UserRepository');
+const OxygenRepository = require('../Domains/oxygen/OxygenRepository');
+const GardenRepository = require('../Domains/garden/GardenRepository');
 const PasswordHash = require('../Applications/security/PasswordHash');
 const UserRepositoryPostgres = require('./repository/UserRepositoryPostgres');
+const OxygenRepositoryPostgres = require('./repository/OxygenRepositoryPostgres');
 const BcryptPasswordHash = require('./security/BcryptPasswordHash');
+const GardenRepositoryPostgres = require('./repository/GardenRepositoryPostgres');
 
 // use case
 const AddUserUseCase = require('../Applications/use_case/AddUserUseCase');
@@ -23,6 +27,10 @@ const AuthenticationRepository = require('../Domains/authentications/Authenticat
 const AuthenticationRepositoryPostgres = require('./repository/AuthenticationRepositoryPostgres');
 const LogoutUserUseCase = require('../Applications/use_case/LogoutUserUseCase');
 const RefreshAuthenticationUseCase = require('../Applications/use_case/RefreshAuthenticationUseCase');
+const AddGardenUseCase = require('../Applications/use_case/AddGardenUseCase');
+const GetGardensUseCase = require('../Applications/use_case/GetGardensUseCase');
+const GetGardenByIdUseCase = require('../Applications/use_case/GetGardenByIdUseCase');
+const DeleteGardenByIdUseCase = require('../Applications/use_case/DeleteGardenByIdUseCase');
 
 // creating container
 const container = createContainer();
@@ -76,6 +84,34 @@ container.register([
       ],
     },
   },
+  {
+    key: OxygenRepository.name,
+    Class: OxygenRepositoryPostgres,
+    parameter: {
+      dependencies: [
+        {
+          concrete: pool,
+        },
+        {
+          concrete: nanoid,
+        },
+      ],
+    },
+  },
+  {
+    key: GardenRepository.name,
+    Class: GardenRepositoryPostgres,
+    parameter: {
+      dependencies: [
+        {
+          concrete: pool,
+        },
+        {
+          concrete: nanoid,
+        },
+      ],
+    },
+  },
 ]);
 
 // registering use cases
@@ -89,6 +125,10 @@ container.register([
         {
           name: 'userRepository',
           internal: UserRepository.name,
+        },
+        {
+          name: 'oxygenRepository',
+          internal: OxygenRepository.name,
         },
         {
           name: 'passwordHash',
@@ -148,6 +188,58 @@ container.register([
         {
           name: 'authenticationTokenManager',
           internal: AuthenticationTokenManager.name,
+        },
+      ],
+    },
+  },
+  {
+    key: AddGardenUseCase.name,
+    Class: AddGardenUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        {
+          name: 'gardenRepository',
+          internal: GardenRepository.name,
+        },
+      ],
+    },
+  },
+  {
+    key: GetGardensUseCase.name,
+    Class: GetGardensUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        {
+          name: 'gardenRepository',
+          internal: GardenRepository.name,
+        },
+      ],
+    },
+  },
+  {
+    key: GetGardenByIdUseCase.name,
+    Class: GetGardenByIdUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        {
+          name: 'gardenRepository',
+          internal: GardenRepository.name,
+        },
+      ],
+    },
+  },
+  {
+    key: DeleteGardenByIdUseCase.name,
+    Class: DeleteGardenByIdUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        {
+          name: 'gardenRepository',
+          internal: GardenRepository.name,
         },
       ],
     },

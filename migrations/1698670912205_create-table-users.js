@@ -1,14 +1,14 @@
 /* eslint-disable camelcase */
+
 exports.up = (pgm) => {
   pgm.createTable('users', {
     id: {
       type: 'VARCHAR(50)',
       primaryKey: true,
     },
-    username: {
+    oxygen_id: {
       type: 'VARCHAR(50)',
       notNull: true,
-      unique: true,
     },
     email: {
       type: 'VARCHAR(50)',
@@ -19,7 +19,7 @@ exports.up = (pgm) => {
       type: 'TEXT',
       notNull: true,
     },
-    fullname: {
+    name: {
       type: 'TEXT',
       notNull: true,
     },
@@ -27,6 +27,7 @@ exports.up = (pgm) => {
       type: 'TEXT',
     },
   });
+  pgm.addConstraint('users', 'fk_users.oxygen_id_oxygen.id', 'FOREIGN KEY(oxygen_id) REFERENCES oxygen(id) ON DELETE CASCADE');
 };
 
 exports.down = (pgm) => {

@@ -9,26 +9,26 @@ class UserRepositoryPostgres extends UserRepository {
     this._idGenerator = idGenerator;
   }
 
-  async verifyAvailableUsername(username) {
+  async verifyAvailableEmail(email) {
     const query = {
-      text: 'SELECT username FROM users WHERE username = $1',
-      values: [username],
+      text: 'SELECT email FROM users WHERE email = $1',
+      values: [email],
     };
 
     const result = await this._pool.query(query);
 
     if (result.rowCount) {
-      throw new InvariantError('username tidak tersedia');
+      throw new InvariantError('email tidak tersedia');
     }
   }
 
-  async addUser(registerUser) {
-    const { username, password, fullname } = registerUser;
+  async addUser(registerUser, oxygen_id) {
+    const { name, email, password } = registerUser;
     const id = `user-${this._idGenerator()}`;
 
     const query = {
-      text: 'INSERT INTO users VALUES($1, $2, $3, $4) RETURNING id, username, fullname',
-      values: [id, username, password, fullname],
+      text: 'INSERT INTO users VALUES($1, $2, $3, $4, $5) RETURNING id, oxygen_id, email, name',
+      values: [id, oxygen_id, email, password, name],
     };
 
     const result = await this._pool.query(query);
@@ -36,25 +36,25 @@ class UserRepositoryPostgres extends UserRepository {
     return new RegisteredUser({ ...result.rows[0] });
   }
 
-  async getPasswordByUsername(username) {
+  async getPasswordByEmail(email) {
     const query = {
-      text: 'SELECT password FROM users WHERE username = $1',
-      values: [username],
+      text: 'SELECT password FROM users WHERE email = $1',
+      values: [email],
     };
 
     const result = await this._pool.query(query);
 
     if (!result.rowCount) {
-      throw new InvariantError('username tidak ditemukan');
+      throw new InvariantError('email tidak ditemukan');
     }
 
     return result.rows[0].password;
   }
 
-  async getIdByUsername(username) {
+  async getIdByEmail(email) {
     const query = {
-      text: 'SELECT id FROM users WHERE username = $1',
-      values: [username],
+      text: 'SELECT id FROM users WHERE email = $1',
+      values: [email],
     };
 
     const result = await this._pool.query(query);
