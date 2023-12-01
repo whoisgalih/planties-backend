@@ -1,4 +1,4 @@
-const GetGarden = require('../../Domains/garden/entities/GetGarden');
+const GetGarden = require('../../Domains/gardens/entities/GetGarden');
 
 class DeleteGardenByIdUseCase {
   constructor({ gardenRepository }) {

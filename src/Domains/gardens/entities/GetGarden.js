@@ -9,7 +9,6 @@ class GetGarden {
   }
 
   _verifyPayload({ id, user_id }) {
-    console.log('GetGarden');
     if (!id || !user_id) {
       throw new Error('GET_GARDEN.NOT_CONTAIN_NEEDED_PROPERTY');
     }

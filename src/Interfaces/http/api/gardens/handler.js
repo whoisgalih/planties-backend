@@ -51,8 +51,6 @@ class GardensHandler {
   async getGardenByIdHandler(request, h) {
     const getGardenByIdUseCase = await this._container.getInstance(GetGardenByIdUseCase.name);
 
-    console.log('getGardenByIdHandler');
-
     const { id: user_id } = request.auth.credentials;
     const { id } = request.params;
 

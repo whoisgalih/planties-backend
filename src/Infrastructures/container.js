@@ -10,13 +10,15 @@ const pool = require('./database/postgres/pool');
 
 // service (repository, helper, manager, etc)
 const UserRepository = require('../Domains/users/UserRepository');
-const OxygenRepository = require('../Domains/oxygen/OxygenRepository');
-const GardenRepository = require('../Domains/garden/GardenRepository');
+const OxygenRepository = require('../Domains/oxygens/OxygenRepository');
+const GardenRepository = require('../Domains/gardens/GardenRepository');
+const PlantRepository = require('../Domains/plants/PlantRepository');
 const PasswordHash = require('../Applications/security/PasswordHash');
 const UserRepositoryPostgres = require('./repository/UserRepositoryPostgres');
 const OxygenRepositoryPostgres = require('./repository/OxygenRepositoryPostgres');
 const BcryptPasswordHash = require('./security/BcryptPasswordHash');
 const GardenRepositoryPostgres = require('./repository/GardenRepositoryPostgres');
+const PlantRepositoryPostgres = require('./repository/PlantRepositoryPostgres');
 
 // use case
 const AddUserUseCase = require('../Applications/use_case/AddUserUseCase');
@@ -27,10 +29,18 @@ const AuthenticationRepository = require('../Domains/authentications/Authenticat
 const AuthenticationRepositoryPostgres = require('./repository/AuthenticationRepositoryPostgres');
 const LogoutUserUseCase = require('../Applications/use_case/LogoutUserUseCase');
 const RefreshAuthenticationUseCase = require('../Applications/use_case/RefreshAuthenticationUseCase');
+
+// Garden use case
 const AddGardenUseCase = require('../Applications/use_case/AddGardenUseCase');
 const GetGardensUseCase = require('../Applications/use_case/GetGardensUseCase');
 const GetGardenByIdUseCase = require('../Applications/use_case/GetGardenByIdUseCase');
 const DeleteGardenByIdUseCase = require('../Applications/use_case/DeleteGardenByIdUseCase');
+
+// Plant use case
+const AddPlantUseCase = require('../Applications/use_case/AddPlantUseCase');
+const GetPlantsByGardenIdUseCase = require('../Applications/use_case/GetPlantsByGardenIdUseCase');
+const GetPlantByIdUseCase = require('../Applications/use_case/GetPlantByIdUseCase');
+const DeletePlantByIdUseCase = require('../Applications/use_case/DeletePlantByIdUseCase');
 
 // creating container
 const container = createContainer();
@@ -101,6 +111,20 @@ container.register([
   {
     key: GardenRepository.name,
     Class: GardenRepositoryPostgres,
+    parameter: {
+      dependencies: [
+        {
+          concrete: pool,
+        },
+        {
+          concrete: nanoid,
+        },
+      ],
+    },
+  },
+  {
+    key: PlantRepository.name,
+    Class: PlantRepositoryPostgres,
     parameter: {
       dependencies: [
         {
@@ -240,6 +264,74 @@ container.register([
         {
           name: 'gardenRepository',
           internal: GardenRepository.name,
+        },
+      ],
+    },
+  },
+  {
+    key: AddPlantUseCase.name,
+    Class: AddPlantUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        {
+          name: 'gardenRepository',
+          internal: GardenRepository.name,
+        },
+        {
+          name: 'plantRepository',
+          internal: PlantRepository.name,
+        },
+      ],
+    },
+  },
+  {
+    key: GetPlantsByGardenIdUseCase.name,
+    Class: GetPlantsByGardenIdUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        {
+          name: 'gardenRepository',
+          internal: GardenRepository.name,
+        },
+        {
+          name: 'plantRepository',
+          internal: PlantRepository.name,
+        },
+      ],
+    },
+  },
+  {
+    key: GetPlantByIdUseCase.name,
+    Class: GetPlantByIdUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        {
+          name: 'gardenRepository',
+          internal: GardenRepository.name,
+        },
+        {
+          name: 'plantRepository',
+          internal: PlantRepository.name,
+        },
+      ],
+    },
+  },
+  {
+    key: DeletePlantByIdUseCase.name,
+    Class: DeletePlantByIdUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        {
+          name: 'gardenRepository',
+          internal: GardenRepository.name,
+        },
+        {
+          name: 'plantRepository',
+          internal: PlantRepository.name,
         },
       ],
     },

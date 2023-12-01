@@ -1,5 +1,5 @@
-const OxygenRepository = require('../../Domains/oxygen/OxygenRepository');
-const AddedOxygen = require('../../Domains/oxygen/entities/AddedOxygen');
+const OxygenRepository = require('../../Domains/oxygens/OxygenRepository');
+const AddedOxygen = require('../../Domains/oxygens/entities/AddedOxygen');
 
 class OxygenRepositoryPostgres extends OxygenRepository {
   constructor(pool, idGenerator) {

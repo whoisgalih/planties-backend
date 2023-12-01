@@ -1,5 +1,5 @@
-const GardenRepository = require('../../Domains/garden/GardenRepository');
-const AddedGarden = require('../../Domains/garden/entities/AddedGarden');
+const GardenRepository = require('../../Domains/gardens/GardenRepository');
+const AddedGarden = require('../../Domains/gardens/entities/AddedGarden');
 
 const NotFoundError = require('../../Commons/exceptions/NotFoundError');
 const AuthorizationError = require('../../Commons/exceptions/AuthorizationError');
@@ -36,7 +36,6 @@ class GardenRepositoryPostgres extends GardenRepository {
   }
 
   async verifyIfGardenExists(id) {
-    console.log(id);
     const query = {
       text: 'SELECT * FROM gardens WHERE id = $1',
       values: [id],

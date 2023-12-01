@@ -7,6 +7,7 @@ const DomainErrorTranslator = require('../../Commons/exceptions/DomainErrorTrans
 const users = require('../../Interfaces/http/api/users');
 const authentications = require('../../Interfaces/http/api/authentications');
 const gardens = require('../../Interfaces/http/api/gardens');
+const plants = require('../../Interfaces/http/api/plants');
 
 const createServer = async (container) => {
   const server = Hapi.server({
@@ -52,6 +53,10 @@ const createServer = async (container) => {
     },
     {
       plugin: gardens,
+      options: { container },
+    },
+    {
+      plugin: plants,
       options: { container },
     },
   ]);

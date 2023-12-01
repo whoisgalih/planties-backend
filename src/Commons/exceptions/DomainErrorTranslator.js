@@ -44,8 +44,20 @@ DomainErrorTranslator._directories = {
   'ADDED_GARDEN.TYPE_NOT_MEET_SPECIFICATION': new InvariantError('tidak dapat membuat kebun baru karena tipe kebun tidak sesuai'),
 
   // Get Garden
-  'GET_GARDEN.NOT_CONTAIN_NEEDED_PROPERTY': new InvariantError('tidak dapat membuat kebun baru karena properti yang dibutuhkan tidak ada'),
-  'GET_GARDEN.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('tidak dapat membuat kebun baru karena tipe data tidak sesuai'),
+  'GET_GARDEN.NOT_CONTAIN_NEEDED_PROPERTY': new InvariantError('tidak dapat mendapat kebun baru karena properti yang dibutuhkan tidak ada'),
+  'GET_GARDEN.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('tidak dapat mendapat kebun baru karena tipe data tidak sesuai'),
+
+  // Add Plant
+  'ADD_PLANT.NOT_CONTAIN_NEEDED_PROPERTY': new InvariantError('tidak dapat membuat tanaman baru karena properti yang dibutuhkan tidak ada'),
+  'ADD_PLANT.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('tidak dapat membuat tanaman baru karena tipe data tidak sesuai'),
+
+  // Get Plants In Garden
+  'GET_PLANTS.NOT_CONTAIN_NEEDED_PROPERTY': new InvariantError('tidak dapat mendapat tanaman baru karena properti yang dibutuhkan tidak ada'),
+  'GET_PLANTS.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('tidak dapat mendapat tanaman baru karena tipe data tidak sesuai'),
+
+  // Get Plants In Garden
+  'GET_PLANT.NOT_CONTAIN_NEEDED_PROPERTY': new InvariantError('tidak dapat mendapat tanaman baru karena properti yang dibutuhkan tidak ada'),
+  'GET_PLANT.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('tidak dapat mendapat tanaman baru karena tipe data tidak sesuai'),
 };
 
 module.exports = DomainErrorTranslator;
