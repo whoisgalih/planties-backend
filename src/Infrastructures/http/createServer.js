@@ -8,6 +8,7 @@ const users = require('../../Interfaces/http/api/users');
 const authentications = require('../../Interfaces/http/api/authentications');
 const gardens = require('../../Interfaces/http/api/gardens');
 const plants = require('../../Interfaces/http/api/plants');
+const reminders = require('../../Interfaces/http/api/reminders');
 
 const createServer = async (container) => {
   const server = Hapi.server({
@@ -57,6 +58,10 @@ const createServer = async (container) => {
     },
     {
       plugin: plants,
+      options: { container },
+    },
+    {
+      plugin: reminders,
       options: { container },
     },
   ]);

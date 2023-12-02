@@ -13,12 +13,14 @@ const UserRepository = require('../Domains/users/UserRepository');
 const OxygenRepository = require('../Domains/oxygens/OxygenRepository');
 const GardenRepository = require('../Domains/gardens/GardenRepository');
 const PlantRepository = require('../Domains/plants/PlantRepository');
+const ReminderRepository = require('../Domains/reminders/ReminderRepository');
 const PasswordHash = require('../Applications/security/PasswordHash');
 const UserRepositoryPostgres = require('./repository/UserRepositoryPostgres');
 const OxygenRepositoryPostgres = require('./repository/OxygenRepositoryPostgres');
 const BcryptPasswordHash = require('./security/BcryptPasswordHash');
 const GardenRepositoryPostgres = require('./repository/GardenRepositoryPostgres');
 const PlantRepositoryPostgres = require('./repository/PlantRepositoryPostgres');
+const ReminderRepositoryPostgres = require('./repository/ReminderRepositoryPostgres');
 
 // use case
 const AddUserUseCase = require('../Applications/use_case/AddUserUseCase');
@@ -41,6 +43,9 @@ const AddPlantUseCase = require('../Applications/use_case/AddPlantUseCase');
 const GetPlantsByGardenIdUseCase = require('../Applications/use_case/GetPlantsByGardenIdUseCase');
 const GetPlantByIdUseCase = require('../Applications/use_case/GetPlantByIdUseCase');
 const DeletePlantByIdUseCase = require('../Applications/use_case/DeletePlantByIdUseCase');
+
+// Reminder use case
+const AddReminderUseCase = require('../Applications/use_case/AddReminderUseCase');
 
 // creating container
 const container = createContainer();
@@ -125,6 +130,20 @@ container.register([
   {
     key: PlantRepository.name,
     Class: PlantRepositoryPostgres,
+    parameter: {
+      dependencies: [
+        {
+          concrete: pool,
+        },
+        {
+          concrete: nanoid,
+        },
+      ],
+    },
+  },
+  {
+    key: ReminderRepository.name,
+    Class: ReminderRepositoryPostgres,
     parameter: {
       dependencies: [
         {
@@ -332,6 +351,23 @@ container.register([
         {
           name: 'plantRepository',
           internal: PlantRepository.name,
+        },
+      ],
+    },
+  },
+  {
+    key: AddReminderUseCase.name,
+    Class: AddReminderUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        {
+          name: 'gardenRepository',
+          internal: GardenRepository.name,
+        },
+        {
+          name: 'reminderRepository',
+          internal: ReminderRepository.name,
         },
       ],
     },
