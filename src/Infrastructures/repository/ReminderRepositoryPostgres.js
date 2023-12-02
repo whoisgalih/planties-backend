@@ -18,6 +18,18 @@ class ReminderRepositoryPostgres extends ReminderRepository {
     const result = await this._pool.query(query);
     return result.rows[0];
   }
+
+  async getReminders(getReminders) {
+    const { garden_id } = getReminders;
+
+    const query = {
+      text: 'SELECT * FROM reminders WHERE garden_id = $1',
+      values: [garden_id],
+    };
+
+    const result = await this._pool.query(query);
+    return result.rows;
+  }
 }
 
 module.exports = ReminderRepositoryPostgres;

@@ -7,6 +7,14 @@ const routes = (handler) => [
       auth: 'planties_jwt',
     },
   },
+  {
+    method: 'GET',
+    path: '/gardens/{id}/reminders',
+    handler: handler.getRemindersByGardenIdHandler,
+    options: {
+      auth: 'planties_jwt',
+    },
+  },
 ];
 
 module.exports = routes;
