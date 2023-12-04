@@ -23,6 +23,14 @@ const routes = (handler) => [
       auth: 'planties_jwt',
     },
   },
+  {
+    method: 'PUT',
+    path: '/gardens/{garden_id}/reminders/{id}',
+    handler: handler.putReminderByIdHandler,
+    options: {
+      auth: 'planties_jwt',
+    },
+  },
 ];
 
 module.exports = routes;

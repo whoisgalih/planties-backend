@@ -1,5 +1,7 @@
 const ReminderRepository = require('../../Domains/reminders/ReminderRepository');
 
+const NotFoundError = require('../../Commons/exceptions/NotFoundError');
+
 class ReminderRepositoryPostgres extends ReminderRepository {
   constructor(pool, idGenerator) {
     super();
@@ -35,6 +37,23 @@ class ReminderRepositoryPostgres extends ReminderRepository {
     const query = {
       text: 'SELECT * FROM reminders WHERE id = $1',
       values: [id],
+    };
+
+    const result = await this._pool.query(query);
+
+    if (!result.rowCount) {
+      throw new NotFoundError('reminder tidak ditemukan');
+    }
+
+    return result.rows[0];
+  }
+
+  async editReminder(editReminder) {
+    const { id, name, type, duration } = editReminder;
+
+    const query = {
+      text: 'UPDATE reminders SET name = $1, type = $2, duration = $3 WHERE id = $4 RETURNING id, garden_id, name, type, duration',
+      values: [name, type, duration, id],
     };
 
     const result = await this._pool.query(query);

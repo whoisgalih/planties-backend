@@ -68,6 +68,11 @@ DomainErrorTranslator._directories = {
   'ADDED_REMINDER.NOT_CONTAIN_NEEDED_PROPERTY': new InvariantError('reminder yang ada tidak memiliki properti yang dibutuhkan tidak ada'),
   'ADDED_REMINDER.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('reminder yang ada tidak memiliki tipe data yang sesuai'),
   'ADDED_REMINDER.TYPE_NOT_MEET_SPECIFICATION': new InvariantError('reminder yang ada tidak memiliki tipe reminder yang sesuai'),
+
+  // Edit Reminder
+  'EDIT_REMINDER.NOT_CONTAIN_NEEDED_PROPERTY': new InvariantError('tidak dapat mengubah reminder karena properti yang dibutuhkan tidak ada'),
+  'EDIT_REMINDER.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('tidak dapat mengubah reminder karena tipe data tidak sesuai'),
+  'EDIT_REMINDER.TYPE_NOT_MEET_SPECIFICATION': new InvariantError('tidak dapat mengubah reminder karena tipe reminder tidak sesuai'),
 };
 
 module.exports = DomainErrorTranslator;
