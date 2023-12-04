@@ -49,6 +49,7 @@ const AddReminderUseCase = require('../Applications/use_case/AddReminderUseCase'
 const GetRemindersByGardenIdUseCase = require('../Applications/use_case/GetRemindersByGardenIdUseCase');
 const GetReminderByIdUseCase = require('../Applications/use_case/GetReminderByIdUseCase');
 const EditReminderUseCase = require('../Applications/use_case/EditReminderUseCase');
+const DeleteReminderByIdUseCase = require('../Applications/use_case/DeleteReminderByIdUseCase');
 
 // creating container
 const container = createContainer();
@@ -419,6 +420,23 @@ container.register([
   {
     key: EditReminderUseCase.name,
     Class: EditReminderUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        {
+          name: 'gardenRepository',
+          internal: GardenRepository.name,
+        },
+        {
+          name: 'reminderRepository',
+          internal: ReminderRepository.name,
+        },
+      ],
+    },
+  },
+  {
+    key: DeleteReminderByIdUseCase.name,
+    Class: DeleteReminderByIdUseCase,
     parameter: {
       injectType: 'destructuring',
       dependencies: [

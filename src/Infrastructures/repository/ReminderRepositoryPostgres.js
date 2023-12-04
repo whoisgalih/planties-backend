@@ -64,6 +64,35 @@ class ReminderRepositoryPostgres extends ReminderRepository {
 
     return result.rows[0];
   }
+
+  async verifyReminderOwner({ id, user_id }) {
+    const query = {
+      // join reminders and gardens table to verify if the reminder belongs to the user
+      text: 'SELECT reminders.id FROM reminders INNER JOIN gardens ON reminders.garden_id = gardens.id WHERE reminders.id = $1 AND gardens.user_id = $2',
+      values: [id, user_id],
+    };
+
+    const result = await this._pool.query(query);
+
+    if (!result.rowCount) {
+      throw new NotFoundError('Anda tidak berhak mengakses reminder ini');
+    }
+  }
+
+  async deleteReminderById(id) {
+    const query = {
+      text: 'DELETE FROM reminders WHERE id = $1 RETURNING id, garden_id, name, type, duration',
+      values: [id],
+    };
+
+    const result = await this._pool.query(query);
+
+    if (!result.rowCount) {
+      throw new NotFoundError('reminder tidak ditemukan');
+    }
+
+    return result.rows[0];
+  }
 }
 
 module.exports = ReminderRepositoryPostgres;

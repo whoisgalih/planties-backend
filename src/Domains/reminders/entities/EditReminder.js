@@ -13,7 +13,6 @@ class EditReminder {
   }
 
   _verifyPayload({ id, name, type, duration, user_id, garden_id }) {
-    console.log(id, name, type, duration, user_id, garden_id);
     if (!id || !name || !type || !duration || !user_id || !garden_id) {
       throw new Error('EDIT_REMINDER.NOT_CONTAIN_NEEDED_PROPERTY');
     }

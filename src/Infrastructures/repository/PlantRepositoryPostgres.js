@@ -46,15 +46,12 @@ class PlantRepositoryPostgres extends PlantRepository {
   }
 
   async getPlantById(id) {
-    console.log(id);
     const query = {
       text: 'SELECT * FROM plants WHERE id = $1',
       values: [id],
     };
 
     const result = await this._pool.query(query);
-
-    console.log(result.rows);
 
     return result.rows[0];
   }

@@ -31,6 +31,14 @@ const routes = (handler) => [
       auth: 'planties_jwt',
     },
   },
+  {
+    method: 'DELETE',
+    path: '/gardens/{garden_id}/reminders/{id}',
+    handler: handler.deleteReminderByIdHandler,
+    options: {
+      auth: 'planties_jwt',
+    },
+  },
 ];
 
 module.exports = routes;
