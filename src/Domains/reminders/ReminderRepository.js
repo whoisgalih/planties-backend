@@ -3,7 +3,11 @@ class ReminderRepository {
     throw new Error('REMINDER_REPOSITORY.METHOD_NOT_IMPLEMENTED');
   }
 
-  async getReminders(garden_id) {
+  async getRemindersByGardenId(garden_id) {
+    throw new Error('REMINDER_REPOSITORY.METHOD_NOT_IMPLEMENTED');
+  }
+
+  async getReminderById(id) {
     throw new Error('REMINDER_REPOSITORY.METHOD_NOT_IMPLEMENTED');
   }
 }

@@ -1,5 +1,6 @@
 const AddReminderUseCase = require('../../../../Applications/use_case/AddReminderUseCase');
 const GetRemindersByGardenIdUseCase = require('../../../../Applications/use_case/GetRemindersByGardenIdUseCase');
+const GetReminderByIdUseCase = require('../../../../Applications/use_case/GetReminderByIdUseCase');
 
 class ReminderHandler {
   constructor(container) {
@@ -7,6 +8,7 @@ class ReminderHandler {
 
     this.postReminderHandler = this.postReminderHandler.bind(this);
     this.getRemindersByGardenIdHandler = this.getRemindersByGardenIdHandler.bind(this);
+    this.getReminderByIdHandler = this.getReminderByIdHandler.bind(this);
   }
 
   async postReminderHandler(request, h) {
@@ -41,6 +43,25 @@ class ReminderHandler {
       status: 'success',
       data: {
         reminders,
+      },
+    });
+
+    response.code(200);
+    return response;
+  }
+
+  async getReminderByIdHandler(request, h) {
+    const getReminderByIdUseCase = await this._container.getInstance(GetReminderByIdUseCase.name);
+
+    const { id: user_id } = request.auth.credentials;
+    const { garden_id, id } = request.params;
+
+    const reminder = await getReminderByIdUseCase.execute({ garden_id, id, user_id });
+
+    const response = h.response({
+      status: 'success',
+      data: {
+        reminder,
       },
     });
 

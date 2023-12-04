@@ -30,6 +30,21 @@ class ReminderRepositoryPostgres extends ReminderRepository {
     const result = await this._pool.query(query);
     return result.rows;
   }
+
+  async getReminderById(id) {
+    const query = {
+      text: 'SELECT * FROM reminders WHERE id = $1',
+      values: [id],
+    };
+
+    const result = await this._pool.query(query);
+
+    if (!result.rowCount) {
+      throw new NotFoundError('reminder tidak ditemukan');
+    }
+
+    return result.rows[0];
+  }
 }
 
 module.exports = ReminderRepositoryPostgres;
