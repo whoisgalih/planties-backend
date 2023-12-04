@@ -52,12 +52,27 @@ DomainErrorTranslator._directories = {
   'ADD_PLANT.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('tidak dapat membuat tanaman baru karena tipe data tidak sesuai'),
 
   // Get Plants In Garden
-  'GET_PLANTS.NOT_CONTAIN_NEEDED_PROPERTY': new InvariantError('tidak dapat mendapat tanaman baru karena properti yang dibutuhkan tidak ada'),
-  'GET_PLANTS.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('tidak dapat mendapat tanaman baru karena tipe data tidak sesuai'),
+  'GET_PLANTS.NOT_CONTAIN_NEEDED_PROPERTY': new InvariantError('tidak dapat mendapat tanaman-tanaman karena properti yang dibutuhkan tidak ada'),
+  'GET_PLANTS.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('tidak dapat mendapat tanaman-tanaman karena tipe data tidak sesuai'),
 
   // Get Plants In Garden
-  'GET_PLANT.NOT_CONTAIN_NEEDED_PROPERTY': new InvariantError('tidak dapat mendapat tanaman baru karena properti yang dibutuhkan tidak ada'),
-  'GET_PLANT.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('tidak dapat mendapat tanaman baru karena tipe data tidak sesuai'),
+  'GET_PLANT.NOT_CONTAIN_NEEDED_PROPERTY': new InvariantError('tidak dapat mendapat tanaman karena properti yang dibutuhkan tidak ada'),
+  'GET_PLANT.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('tidak dapat mendapat tanaman karena tipe data tidak sesuai'),
+
+  // Add Reminder
+  'ADD_REMINDER.NOT_CONTAIN_NEEDED_PROPERTY': new InvariantError('tidak dapat membuat reminder baru karena properti yang dibutuhkan tidak ada'),
+  'ADD_REMINDER.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('tidak dapat membuat reminder baru karena tipe data tidak sesuai'),
+  'ADD_REMINDER.TYPE_NOT_MEET_SPECIFICATION': new InvariantError('tidak dapat membuat reminder baru karena tipe reminder tidak sesuai'),
+
+  // Added Reminder
+  'ADDED_REMINDER.NOT_CONTAIN_NEEDED_PROPERTY': new InvariantError('reminder yang ada tidak memiliki properti yang dibutuhkan tidak ada'),
+  'ADDED_REMINDER.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('reminder yang ada tidak memiliki tipe data yang sesuai'),
+  'ADDED_REMINDER.TYPE_NOT_MEET_SPECIFICATION': new InvariantError('reminder yang ada tidak memiliki tipe reminder yang sesuai'),
+
+  // Edit Reminder
+  'EDIT_REMINDER.NOT_CONTAIN_NEEDED_PROPERTY': new InvariantError('tidak dapat mengubah reminder karena properti yang dibutuhkan tidak ada'),
+  'EDIT_REMINDER.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('tidak dapat mengubah reminder karena tipe data tidak sesuai'),
+  'EDIT_REMINDER.TYPE_NOT_MEET_SPECIFICATION': new InvariantError('tidak dapat mengubah reminder karena tipe reminder tidak sesuai'),
 };
 
 module.exports = DomainErrorTranslator;
