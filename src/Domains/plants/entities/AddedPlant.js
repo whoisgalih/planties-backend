@@ -15,7 +15,6 @@ class AddedPlant {
   }
 
   _verifyPayload({ id, name, banner, photos, user_id, garden_id }) {
-    console.log(id, name, banner, photos, user_id, garden_id);
     if (!id || !name || !photos || !user_id || !garden_id) {
       throw new Error('ADDED_PLANT.NOT_CONTAIN_NEEDED_PROPERTY');
     }
