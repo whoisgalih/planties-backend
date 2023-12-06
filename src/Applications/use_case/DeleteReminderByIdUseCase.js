@@ -9,8 +9,6 @@ class DeleteReminderByIdUseCase {
   async execute(useCasePayload) {
     const { garden_id, user_id, id } = new GetReminderById(useCasePayload);
 
-    console.log(this._gardenRepository);
-
     await this._gardenRepository.verifyIfGardenExists(garden_id);
     await this._reminderRepository.getReminderById(id);
     await this._reminderRepository.verifyReminderOwner({ id, user_id });
