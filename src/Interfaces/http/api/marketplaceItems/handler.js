@@ -1,10 +1,12 @@
 const AddMarketplaceItemUseCase = require('../../../../Applications/use_case/AddMarketplaceItemUseCase');
+const GetAllMarketplaceItemsUseCase = require('../../../../Applications/use_case/GetAllMarketplaceItemsUseCase');
 
 class MarketplaceItemHandler {
   constructor(container) {
     this._container = container;
 
     this.postMarketplaceItemHandler = this.postMarketplaceItemHandler.bind(this);
+    this.getMarketplaceItemsHandler = this.getMarketplaceItemsHandler.bind(this);
   }
 
   async postMarketplaceItemHandler(request, h) {
@@ -23,6 +25,21 @@ class MarketplaceItemHandler {
     });
     response.code(201);
     return response;
+  }
+
+  async getMarketplaceItemsHandler(request, h) {
+    const getAllMarketplaceItemsUseCase = this._container.getInstance(GetAllMarketplaceItemsUseCase.name);
+
+    const { id: user_id } = request.auth.credentials;
+
+    const marketplaceItems = await getAllMarketplaceItemsUseCase.execute(user_id);
+
+    return {
+      status: 'success',
+      data: {
+        marketplace_items: marketplaceItems,
+      },
+    };
   }
 }
 

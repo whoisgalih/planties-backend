@@ -20,6 +20,16 @@ class MarketplaceItemRepositoryPostgres extends MarketplaceItemRepository {
 
     return result.rows[0];
   }
+
+  async getAllMarketplaceItems() {
+    const query = {
+      text: 'SELECT * FROM marketplace_items',
+    };
+
+    const result = await this._pool.query(query);
+
+    return result.rows;
+  }
 }
 
 module.exports = MarketplaceItemRepositoryPostgres;
