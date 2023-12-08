@@ -14,6 +14,8 @@ const OxygenRepository = require('../Domains/oxygens/OxygenRepository');
 const GardenRepository = require('../Domains/gardens/GardenRepository');
 const PlantRepository = require('../Domains/plants/PlantRepository');
 const ReminderRepository = require('../Domains/reminders/ReminderRepository');
+const RoleRepository = require('../Domains/roles/RoleRepository');
+const MarketplaceItemRepository = require('../Domains/marketplaceItems/MarketplaceItemRepository');
 const PasswordHash = require('../Applications/security/PasswordHash');
 const UserRepositoryPostgres = require('./repository/UserRepositoryPostgres');
 const OxygenRepositoryPostgres = require('./repository/OxygenRepositoryPostgres');
@@ -21,6 +23,8 @@ const BcryptPasswordHash = require('./security/BcryptPasswordHash');
 const GardenRepositoryPostgres = require('./repository/GardenRepositoryPostgres');
 const PlantRepositoryPostgres = require('./repository/PlantRepositoryPostgres');
 const ReminderRepositoryPostgres = require('./repository/ReminderRepositoryPostgres');
+const RoleRepositoryPostgres = require('./repository/RoleRepositoryPostgres');
+const MarketplaceItemRepositoryPostgres = require('./repository/MarketplaceItemRepositoryPostgres');
 
 // use case
 const AddUserUseCase = require('../Applications/use_case/AddUserUseCase');
@@ -50,6 +54,10 @@ const GetRemindersByGardenIdUseCase = require('../Applications/use_case/GetRemin
 const GetReminderByIdUseCase = require('../Applications/use_case/GetReminderByIdUseCase');
 const EditReminderUseCase = require('../Applications/use_case/EditReminderUseCase');
 const DeleteReminderByIdUseCase = require('../Applications/use_case/DeleteReminderByIdUseCase');
+
+// Marketplace use case
+// Admin
+const AddMarketplaceItemUseCase = require('../Applications/use_case/AddMarketplaceItemUseCase');
 
 // creating container
 const container = createContainer();
@@ -148,6 +156,34 @@ container.register([
   {
     key: ReminderRepository.name,
     Class: ReminderRepositoryPostgres,
+    parameter: {
+      dependencies: [
+        {
+          concrete: pool,
+        },
+        {
+          concrete: nanoid,
+        },
+      ],
+    },
+  },
+  {
+    key: RoleRepository.name,
+    Class: RoleRepositoryPostgres,
+    parameter: {
+      dependencies: [
+        {
+          concrete: pool,
+        },
+        {
+          concrete: nanoid,
+        },
+      ],
+    },
+  },
+  {
+    key: MarketplaceItemRepository.name,
+    Class: MarketplaceItemRepositoryPostgres,
     parameter: {
       dependencies: [
         {
@@ -447,6 +483,23 @@ container.register([
         {
           name: 'reminderRepository',
           internal: ReminderRepository.name,
+        },
+      ],
+    },
+  },
+  {
+    key: AddMarketplaceItemUseCase.name,
+    Class: AddMarketplaceItemUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        {
+          name: 'roleRepository',
+          internal: RoleRepository.name,
+        },
+        {
+          name: 'marketplaceItemRepository',
+          internal: MarketplaceItemRepository.name,
         },
       ],
     },

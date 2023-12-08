@@ -73,6 +73,16 @@ DomainErrorTranslator._directories = {
   'EDIT_REMINDER.NOT_CONTAIN_NEEDED_PROPERTY': new InvariantError('tidak dapat mengubah reminder karena properti yang dibutuhkan tidak ada'),
   'EDIT_REMINDER.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('tidak dapat mengubah reminder karena tipe data tidak sesuai'),
   'EDIT_REMINDER.TYPE_NOT_MEET_SPECIFICATION': new InvariantError('tidak dapat mengubah reminder karena tipe reminder tidak sesuai'),
+
+  // Add Marketplace Item
+  'ADD_MARKETPLACE_ITEM.NOT_CONTAIN_NEEDED_PROPERTY': new InvariantError('tidak dapat membuat marketplace item baru karena properti yang dibutuhkan tidak ada'),
+  'ADD_MARKETPLACE_ITEM.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('tidak dapat membuat marketplace item baru karena tipe data tidak sesuai'),
+  'ADD_MARKETPLACE_ITEM.DISCOUNT_NOT_MEET_SPECIFICATION': new InvariantError('tidak dapat membuat marketplace item baru karena diskon kurang dari 0 atau lebih dari 100'),
+
+  // Added Marketplace Item
+  'ADDED_MARKETPLACE_ITEM.NOT_CONTAIN_NEEDED_PROPERTY': new InvariantError('marketplace item yang ada tidak memiliki properti yang dibutuhkan tidak ada'),
+  'ADDED_MARKETPLACE_ITEM.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('marketplace item yang ada tidak memiliki tipe data yang sesuai'),
+  'ADDED_MARKETPLACE_ITEM.DISCOUNT_NOT_MEET_SPECIFICATION': new InvariantError('marketplace item yang ada tidak memiliki diskon yang sesuai'),
 };
 
 module.exports = DomainErrorTranslator;
