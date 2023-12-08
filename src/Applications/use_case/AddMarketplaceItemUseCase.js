@@ -1,4 +1,5 @@
 const AddMarketplaceItem = require('../../Domains/marketplaceItems/entities/AddMarketplaceItem');
+const AddedMarketplaceItem = require('../../Domains/marketplaceItems/entities/AddedMarketplaceItem');
 
 class AddMarketplaceItemUseCase {
   constructor({ roleRepository, marketplaceItemRepository }) {
@@ -14,7 +15,7 @@ class AddMarketplaceItemUseCase {
 
     const marketplaceItem = await this._marketplaceItemRepository.addMarketplaceItem(addMarketplaceItem);
 
-    return marketplaceItem;
+    return new AddedMarketplaceItem(marketplaceItem);
   }
 }
 

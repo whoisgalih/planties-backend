@@ -6,6 +6,10 @@ class MarketplaceItemRepository {
   async getAllMarketplaceItems() {
     throw new Error('MARKETPLACE_ITEM_REPOSITORY.METHOD_NOT_IMPLEMENTED');
   }
+
+  async getMarketplaceItemById(id) {
+    throw new Error('MARKETPLACE_ITEM_REPOSITORY.METHOD_NOT_IMPLEMENTED');
+  }
 }
 
 module.exports = MarketplaceItemRepository;

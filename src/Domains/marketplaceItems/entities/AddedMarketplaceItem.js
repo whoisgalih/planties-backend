@@ -2,7 +2,7 @@ class AddedMarketplaceItem {
   constructor(payload) {
     this._verifyPayload(payload);
 
-    const { id, name, price, discount, rating, desc, watering, scale, height, user_id } = payload;
+    const { id, name, price, discount, rating, desc, watering, scale, height } = payload;
 
     this.id = id;
     this.name = name;
@@ -13,11 +13,11 @@ class AddedMarketplaceItem {
     this.watering = watering;
     this.scale = scale;
     this.height = height;
-    this.user_id = user_id;
   }
 
-  _verifyPayload({ id, name, price, discount, rating, desc, watering, scale, height, user_id }) {
-    if (!id || !name || !price || !discount || !rating || !desc || !watering || !scale || !height || !user_id) {
+  _verifyPayload({ id, name, price, discount, rating, desc, watering, scale, height }) {
+    console.log(id, name, price, discount, rating, desc, watering, scale, height);
+    if (!id || !name || !price || discount === undefined || !rating || !desc || !watering || !scale || !height) {
       throw new Error('ADDED_MARKETPLACE_ITEM.NOT_CONTAIN_NEEDED_PROPERTY');
     }
 
@@ -30,8 +30,7 @@ class AddedMarketplaceItem {
       typeof desc !== 'string' ||
       typeof watering !== 'string' ||
       typeof scale !== 'string' ||
-      typeof height !== 'string' ||
-      typeof user_id !== 'string'
+      typeof height !== 'string'
     ) {
       throw new Error('ADDED_MARKETPLACE_ITEM.NOT_MEET_DATA_TYPE_SPECIFICATION');
     }
@@ -41,3 +40,5 @@ class AddedMarketplaceItem {
     }
   }
 }
+
+module.exports = AddedMarketplaceItem;
