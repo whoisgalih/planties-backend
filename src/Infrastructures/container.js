@@ -60,6 +60,7 @@ const DeleteReminderByIdUseCase = require('../Applications/use_case/DeleteRemind
 const AddMarketplaceItemUseCase = require('../Applications/use_case/AddMarketplaceItemUseCase');
 const GetAllMarketplaceItemsUseCase = require('../Applications/use_case/GetAllMarketplaceItemsUseCase');
 const GetMarketplaceItemByIdUseCase = require('../Applications/use_case/GetMarketplaceItemByIdUseCase');
+const DeleteMarketplaceItemByIdUseCase = require('../Applications/use_case/DeleteMarketplaceItemByIdUseCase');
 
 // creating container
 const container = createContainer();
@@ -526,6 +527,23 @@ container.register([
   {
     key: GetMarketplaceItemByIdUseCase.name,
     Class: GetMarketplaceItemByIdUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        {
+          name: 'roleRepository',
+          internal: RoleRepository.name,
+        },
+        {
+          name: 'marketplaceItemRepository',
+          internal: MarketplaceItemRepository.name,
+        },
+      ],
+    },
+  },
+  {
+    key: DeleteMarketplaceItemByIdUseCase.name,
+    Class: DeleteMarketplaceItemByIdUseCase,
     parameter: {
       injectType: 'destructuring',
       dependencies: [

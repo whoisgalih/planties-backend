@@ -1,6 +1,7 @@
 const AddMarketplaceItemUseCase = require('../../../../Applications/use_case/AddMarketplaceItemUseCase');
 const GetAllMarketplaceItemsUseCase = require('../../../../Applications/use_case/GetAllMarketplaceItemsUseCase');
 const GetMarketplaceItemByIdUseCase = require('../../../../Applications/use_case/GetMarketplaceItemByIdUseCase');
+const DeleteMarketplaceItemByIdUseCase = require('../../../../Applications/use_case/DeleteMarketplaceItemByIdUseCase');
 
 class MarketplaceItemHandler {
   constructor(container) {
@@ -9,6 +10,7 @@ class MarketplaceItemHandler {
     this.postMarketplaceItemHandler = this.postMarketplaceItemHandler.bind(this);
     this.getMarketplaceItemsHandler = this.getMarketplaceItemsHandler.bind(this);
     this.getMarketplaceItemByIdHandler = this.getMarketplaceItemByIdHandler.bind(this);
+    this.deleteMarketplaceItemByIdHandler = this.deleteMarketplaceItemByIdHandler.bind(this);
   }
 
   async postMarketplaceItemHandler(request, h) {
@@ -48,8 +50,25 @@ class MarketplaceItemHandler {
     const getMarketplaceItemByIdUseCase = this._container.getInstance(GetMarketplaceItemByIdUseCase.name);
 
     const { id } = request.params;
+    const { id: user_id } = request.auth.credentials;
 
-    const marketplaceItem = await getMarketplaceItemByIdUseCase.execute({ id });
+    const marketplaceItem = await getMarketplaceItemByIdUseCase.execute({ id, user_id });
+
+    return {
+      status: 'success',
+      data: {
+        marketplace_item: marketplaceItem,
+      },
+    };
+  }
+
+  async deleteMarketplaceItemByIdHandler(request, h) {
+    const deleteMarketplaceItemByIdUseCase = this._container.getInstance(DeleteMarketplaceItemByIdUseCase.name);
+
+    const { id } = request.params;
+    const { id: user_id } = request.auth.credentials;
+
+    const marketplaceItem = await deleteMarketplaceItemByIdUseCase.execute({ id, user_id });
 
     return {
       status: 'success',

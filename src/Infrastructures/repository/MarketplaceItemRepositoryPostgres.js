@@ -1,4 +1,5 @@
 const MarketplaceItemRepository = require('../../Domains/marketplaceItems/MarketplaceItemRepository');
+const InvariantError = require('../../Commons/exceptions/InvariantError');
 
 class MarketplaceItemRepositoryPostgres extends MarketplaceItemRepository {
   constructor(pool, idGenerator) {
@@ -38,6 +39,25 @@ class MarketplaceItemRepositoryPostgres extends MarketplaceItemRepository {
     };
 
     const result = await this._pool.query(query);
+
+    if (!result.rowCount) {
+      throw new InvariantError('Marketplace item tidak ditemukan');
+    }
+
+    return result.rows[0];
+  }
+
+  async deleteMarketplaceItemById(id) {
+    const query = {
+      text: 'DELETE FROM marketplace_items WHERE id = $1 RETURNING id, name, cover, price, discount, rating, sold, marketplace_items.desc, watering, scale, height',
+      values: [id],
+    };
+
+    const result = await this._pool.query(query);
+
+    if (!result.rowCount) {
+      throw new InvariantError('Gagal menghapus marketplace item. Id tidak ditemukan');
+    }
 
     return result.rows[0];
   }
