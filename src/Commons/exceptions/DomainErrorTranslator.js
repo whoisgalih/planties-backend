@@ -83,6 +83,10 @@ DomainErrorTranslator._directories = {
   'ADDED_MARKETPLACE_ITEM.NOT_CONTAIN_NEEDED_PROPERTY': new InvariantError('marketplace item yang ada tidak memiliki properti yang dibutuhkan tidak ada'),
   'ADDED_MARKETPLACE_ITEM.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('marketplace item yang ada tidak memiliki tipe data yang sesuai'),
   'ADDED_MARKETPLACE_ITEM.DISCOUNT_NOT_MEET_SPECIFICATION': new InvariantError('marketplace item yang ada tidak memiliki diskon yang sesuai'),
+
+  // Get Marketplace Item
+  'GET_MARKETPLACE_ITEM.NOT_CONTAIN_NEEDED_PROPERTY': new InvariantError('tidak dapat mendapat marketplace item karena properti yang dibutuhkan tidak ada'),
+  'GET_MARKETPLACE_ITEM.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('tidak dapat mendapat marketplace item karena tipe data tidak sesuai'),
 };
 
 module.exports = DomainErrorTranslator;
