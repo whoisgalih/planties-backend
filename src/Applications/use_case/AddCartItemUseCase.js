@@ -1,7 +1,8 @@
 const AddCartItem = require('../../Domains/cartItems/entities/AddCartItem');
 
 class AddCartItemUseCase {
-  constructor({ cartRepository, cartItemRepository }) {
+  constructor({ marketplaceItemRepository, cartRepository, cartItemRepository }) {
+    this._marketplaceItemRepository = marketplaceItemRepository;
     this._cartRepository = cartRepository;
     this._cartItemRepository = cartItemRepository;
   }
@@ -9,7 +10,7 @@ class AddCartItemUseCase {
   async execute(useCasePayload) {
     const addCartItem = new AddCartItem(useCasePayload);
 
-    console.log(addCartItem);
+    await this._marketplaceItemRepository.getMarketplaceItemById(addCartItem.item);
 
     const cart_id = await this._cartRepository.getActiveCartId(addCartItem.user_id);
 

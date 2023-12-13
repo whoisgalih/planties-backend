@@ -10,6 +10,10 @@ class CartItemRepository {
   async editCartItem(cartItem) {
     throw new Error('CART_ITEM_REPOSITORY.METHOD_NOT_IMPLEMENTED');
   }
+
+  async deleteCartItemById(cartItem) {
+    throw new Error('CART_ITEM_REPOSITORY.METHOD_NOT_IMPLEMENTED');
+  }
 }
 
 module.exports = CartItemRepository;

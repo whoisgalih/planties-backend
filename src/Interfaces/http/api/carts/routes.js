@@ -23,6 +23,14 @@ const routes = (handler) => [
       auth: 'planties_jwt',
     },
   },
+  {
+    method: 'DELETE',
+    path: '/marketplace/carts/{id}',
+    handler: handler.deleteCartItemHandler,
+    options: {
+      auth: 'planties_jwt',
+    },
+  },
 ];
 
 module.exports = routes;

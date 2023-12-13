@@ -1,6 +1,7 @@
 const AddCartItemUseCase = require('../../../../Applications/use_case/AddCartItemUseCase');
 const GetCartUseCase = require('../../../../Applications/use_case/GetCartUseCase');
 const EditCartItemUseCase = require('../../../../Applications/use_case/EditCartItemUseCase');
+const DeleteCartItemByIdUseCase = require('../../../../Applications/use_case/DeleteCartItemByIdUseCase');
 
 class CartsHandler {
   constructor(container) {
@@ -9,6 +10,7 @@ class CartsHandler {
     this.postCartHandler = this.postCartHandler.bind(this);
     this.getCartHandler = this.getCartHandler.bind(this);
     this.putCartItemHandler = this.putCartItemHandler.bind(this);
+    this.deleteCartItemHandler = this.deleteCartItemHandler.bind(this);
   }
 
   async postCartHandler(request, h) {
@@ -20,12 +22,12 @@ class CartsHandler {
       user_id,
     };
 
-    const cartItemId = await addCartItemUseCase.execute(payload);
+    const cartItem = await addCartItemUseCase.execute(payload);
 
     const response = h.response({
       status: 'success',
       data: {
-        cartItemId,
+        cartItem,
       },
     });
     response.code(201);
@@ -63,6 +65,26 @@ class CartsHandler {
       status: 'success',
       data: {
         cartItem: editedCartItem,
+      },
+    };
+  }
+
+  async deleteCartItemHandler(request) {
+    const deleteCartItemUseCase = this._container.getInstance(DeleteCartItemByIdUseCase.name);
+
+    const { id: user_id } = request.auth.credentials;
+    const { id } = request.params;
+    const payload = {
+      id,
+      user_id,
+    };
+
+    const deletedCartItem = await deleteCartItemUseCase.execute(payload);
+
+    return {
+      status: 'success',
+      data: {
+        cartItem: deletedCartItem,
       },
     };
   }

@@ -12,13 +12,13 @@ class CartItemRepositoryPostgres extends CartItemRepository {
     const { cart_id, item, quantity } = cartItem;
     const id = `cart-item-${this._idGenerator()}`;
     const query = {
-      text: 'INSERT INTO cart_items VALUES($1, $2, $3, $4) RETURNING id, cart_id, marketplace_item_id, quantity',
+      text: 'INSERT INTO cart_items VALUES($1, $2, $3, $4) RETURNING id, marketplace_item_id, quantity',
       values: [id, cart_id, item, quantity],
     };
 
     const result = await this._pool.query(query);
 
-    return result.rows[0].id;
+    return result.rows[0];
   }
 
   async verifyIfItemNotInCart(cart_id, item) {
@@ -66,7 +66,7 @@ class CartItemRepositoryPostgres extends CartItemRepository {
   async deleteCartItemById(cartItem) {
     const { id, user_id } = cartItem;
     const query = {
-      text: 'DELETE FROM cart_items FROM carts WHERE cart_items.id = $1 AND cart_id = carts.id AND carts.user_id = $3 RETURNING cart_items.id, marketplace_item_id, quantity',
+      text: 'DELETE FROM cart_items USING carts WHERE cart_items.id = $1 AND cart_id = carts.id AND carts.user_id = $2 RETURNING cart_items.id, marketplace_item_id, quantity',
       values: [id, user_id],
     };
 
@@ -76,7 +76,7 @@ class CartItemRepositoryPostgres extends CartItemRepository {
       throw new InvariantError('Item tidak ditemukan');
     }
 
-    return result.rows[0].id;
+    return result.rows[0];
   }
 }
 

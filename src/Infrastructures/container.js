@@ -70,6 +70,7 @@ const DeleteMarketplaceItemByIdUseCase = require('../Applications/use_case/Delet
 const AddCartItemUseCase = require('../Applications/use_case/AddCartItemUseCase');
 const GetCartUseCase = require('../Applications/use_case/GetCartUseCase');
 const EditCartItemUseCase = require('../Applications/use_case/EditCartItemUseCase');
+const DeleteCartItemByIdUseCase = require('../Applications/use_case/DeleteCartItemByIdUseCase');
 
 // creating container
 const container = createContainer();
@@ -606,6 +607,10 @@ container.register([
       injectType: 'destructuring',
       dependencies: [
         {
+          name: 'marketplaceItemRepository',
+          internal: MarketplaceItemRepository.name,
+        },
+        {
           name: 'cartRepository',
           internal: CartRepository.name,
         },
@@ -632,6 +637,19 @@ container.register([
   {
     key: EditCartItemUseCase.name,
     Class: EditCartItemUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        {
+          name: 'cartItemRepository',
+          internal: CartItemRepository.name,
+        },
+      ],
+    },
+  },
+  {
+    key: DeleteCartItemByIdUseCase.name,
+    Class: DeleteCartItemByIdUseCase,
     parameter: {
       injectType: 'destructuring',
       dependencies: [
