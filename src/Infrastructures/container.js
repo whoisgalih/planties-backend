@@ -68,6 +68,7 @@ const DeleteMarketplaceItemByIdUseCase = require('../Applications/use_case/Delet
 
 // Cart use case
 const AddCartItemUseCase = require('../Applications/use_case/AddCartItemUseCase');
+const GetCartUseCase = require('../Applications/use_case/GetCartUseCase');
 
 // creating container
 const container = createContainer();
@@ -607,6 +608,19 @@ container.register([
           name: 'cartRepository',
           internal: CartRepository.name,
         },
+        {
+          name: 'cartItemRepository',
+          internal: CartItemRepository.name,
+        },
+      ],
+    },
+  },
+  {
+    key: GetCartUseCase.name,
+    Class: GetCartUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
         {
           name: 'cartItemRepository',
           internal: CartItemRepository.name,
