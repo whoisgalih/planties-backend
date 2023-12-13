@@ -15,6 +15,14 @@ const routes = (handler) => [
       auth: 'planties_jwt',
     },
   },
+  {
+    method: 'PUT',
+    path: '/marketplace/carts/{id}',
+    handler: handler.putCartItemHandler,
+    options: {
+      auth: 'planties_jwt',
+    },
+  },
 ];
 
 module.exports = routes;

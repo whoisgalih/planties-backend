@@ -1,5 +1,6 @@
 const AddCartItemUseCase = require('../../../../Applications/use_case/AddCartItemUseCase');
 const GetCartUseCase = require('../../../../Applications/use_case/GetCartUseCase');
+const EditCartItemUseCase = require('../../../../Applications/use_case/EditCartItemUseCase');
 
 class CartsHandler {
   constructor(container) {
@@ -7,6 +8,7 @@ class CartsHandler {
 
     this.postCartHandler = this.postCartHandler.bind(this);
     this.getCartHandler = this.getCartHandler.bind(this);
+    this.putCartItemHandler = this.putCartItemHandler.bind(this);
   }
 
   async postCartHandler(request, h) {
@@ -40,6 +42,27 @@ class CartsHandler {
       status: 'success',
       data: {
         cartItems,
+      },
+    };
+  }
+
+  async putCartItemHandler(request) {
+    const editCartItemUseCase = this._container.getInstance(EditCartItemUseCase.name);
+
+    const { id: user_id } = request.auth.credentials;
+    const { id } = request.params;
+    const payload = {
+      ...request.payload,
+      id,
+      user_id,
+    };
+
+    const editedCartItem = await editCartItemUseCase.execute(payload);
+
+    return {
+      status: 'success',
+      data: {
+        cartItem: editedCartItem,
       },
     };
   }
