@@ -1,1 +1,1 @@
-TRUNCATE authentications, comments, threads, users;
+TRUNCATE oxygen, users, authentications, gardens, reminders, plants, addresses, shipments, marketplace_items, carts, cart_items, wishlists, wishlist_items, transactions,payments, order_status, role;
