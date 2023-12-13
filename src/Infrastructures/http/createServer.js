@@ -10,6 +10,7 @@ const gardens = require('../../Interfaces/http/api/gardens');
 const plants = require('../../Interfaces/http/api/plants');
 const reminders = require('../../Interfaces/http/api/reminders');
 const marketplaceItems = require('../../Interfaces/http/api/marketplaceItems');
+const carts = require('../../Interfaces/http/api/carts');
 
 const createServer = async (container) => {
   const server = Hapi.server({
@@ -67,6 +68,10 @@ const createServer = async (container) => {
     },
     {
       plugin: marketplaceItems,
+      options: { container },
+    },
+    {
+      plugin: carts,
       options: { container },
     },
   ]);

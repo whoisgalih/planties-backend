@@ -16,6 +16,8 @@ const PlantRepository = require('../Domains/plants/PlantRepository');
 const ReminderRepository = require('../Domains/reminders/ReminderRepository');
 const RoleRepository = require('../Domains/roles/RoleRepository');
 const MarketplaceItemRepository = require('../Domains/marketplaceItems/MarketplaceItemRepository');
+const CartRepository = require('../Domains/carts/CartRepository');
+const CartItemRepository = require('../Domains/cartItems/CartItemRepository');
 const PasswordHash = require('../Applications/security/PasswordHash');
 const UserRepositoryPostgres = require('./repository/UserRepositoryPostgres');
 const OxygenRepositoryPostgres = require('./repository/OxygenRepositoryPostgres');
@@ -25,6 +27,8 @@ const PlantRepositoryPostgres = require('./repository/PlantRepositoryPostgres');
 const ReminderRepositoryPostgres = require('./repository/ReminderRepositoryPostgres');
 const RoleRepositoryPostgres = require('./repository/RoleRepositoryPostgres');
 const MarketplaceItemRepositoryPostgres = require('./repository/MarketplaceItemRepositoryPostgres');
+const CartRepositoryPostgres = require('./repository/CartRepositoryPostgres');
+const CartItemRepositoryPostgres = require('./repository/CartItemRepositoryPostgres');
 
 // use case
 const AddUserUseCase = require('../Applications/use_case/AddUserUseCase');
@@ -61,6 +65,9 @@ const AddMarketplaceItemUseCase = require('../Applications/use_case/AddMarketpla
 const GetAllMarketplaceItemsUseCase = require('../Applications/use_case/GetAllMarketplaceItemsUseCase');
 const GetMarketplaceItemByIdUseCase = require('../Applications/use_case/GetMarketplaceItemByIdUseCase');
 const DeleteMarketplaceItemByIdUseCase = require('../Applications/use_case/DeleteMarketplaceItemByIdUseCase');
+
+// Cart use case
+const AddCartItemUseCase = require('../Applications/use_case/AddCartItemUseCase');
 
 // creating container
 const container = createContainer();
@@ -198,6 +205,34 @@ container.register([
       ],
     },
   },
+  {
+    key: CartRepository.name,
+    Class: CartRepositoryPostgres,
+    parameter: {
+      dependencies: [
+        {
+          concrete: pool,
+        },
+        {
+          concrete: nanoid,
+        },
+      ],
+    },
+  },
+  {
+    key: CartItemRepository.name,
+    Class: CartItemRepositoryPostgres,
+    parameter: {
+      dependencies: [
+        {
+          concrete: pool,
+        },
+        {
+          concrete: nanoid,
+        },
+      ],
+    },
+  },
 ]);
 
 // registering use cases
@@ -220,6 +255,10 @@ container.register([
         {
           name: 'passwordHash',
           internal: PasswordHash.name,
+        },
+        {
+          name: 'cartRepository',
+          internal: CartRepository.name,
         },
       ],
     },
@@ -554,6 +593,23 @@ container.register([
         {
           name: 'marketplaceItemRepository',
           internal: MarketplaceItemRepository.name,
+        },
+      ],
+    },
+  },
+  {
+    key: AddCartItemUseCase.name,
+    Class: AddCartItemUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        {
+          name: 'cartRepository',
+          internal: CartRepository.name,
+        },
+        {
+          name: 'cartItemRepository',
+          internal: CartItemRepository.name,
         },
       ],
     },

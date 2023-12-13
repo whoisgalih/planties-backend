@@ -87,6 +87,11 @@ DomainErrorTranslator._directories = {
   // Get Marketplace Item
   'GET_MARKETPLACE_ITEM.NOT_CONTAIN_NEEDED_PROPERTY': new InvariantError('tidak dapat mendapat marketplace item karena properti yang dibutuhkan tidak ada'),
   'GET_MARKETPLACE_ITEM.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('tidak dapat mendapat marketplace item karena tipe data tidak sesuai'),
+
+  // Add Cart Item
+  'ADD_CART_ITEM.NOT_CONTAIN_NEEDED_PROPERTY': new InvariantError('tidak dapat membuat cart item baru karena properti yang dibutuhkan tidak ada'),
+  'ADD_CART_ITEM.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('tidak dapat membuat cart item baru karena tipe data tidak sesuai'),
+  'ADD_CART_ITEM.QUANTITY_LESS_THAN_ZERO': new InvariantError('tidak dapat membuat cart item baru karena jumlah barang kurang dari 0'),
 };
 
 module.exports = DomainErrorTranslator;

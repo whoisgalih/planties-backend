@@ -1,1 +1,1 @@
-INSERT INTO role VALUES ('admin-ck2u8fcn928xbq19enxce8c', 'user-adJfqH3vle3Oh0WaOq2DS', 'admin') RETURNING id;
+INSERT INTO role VALUES ('admin-ck2u8fcn928xbq19enxce8c', 'user-cBn8xjFqG94UVa8uVVWwT', 'admin') RETURNING id;
