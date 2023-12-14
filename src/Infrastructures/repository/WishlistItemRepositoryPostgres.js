@@ -32,7 +32,7 @@ class WishlistItemRepositoryPostgres extends WishlistItemRepository {
     }
   }
 
-  async getWishlistItems(user_id) {
+  async getAllWishlistItems(user_id) {
     const query = {
       text: 'SELECT wishlist_items.id, wishlist_items.marketplace_item_id, marketplace_items.name, marketplace_items.price, marketplace_items.discount, marketplace_items.cover FROM wishlists INNER JOIN wishlist_items ON wishlist_items.wishlist_id = wishlists.id INNER JOIN marketplace_items ON wishlist_items.marketplace_item_id = marketplace_items.id WHERE wishlists.user_id = $1',
       values: [user_id],

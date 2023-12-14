@@ -7,6 +7,14 @@ const routes = (handler) => [
       auth: 'planties_jwt',
     },
   },
+  {
+    method: 'GET',
+    path: '/wishlists',
+    handler: handler.getAllWishlistItemsHandler,
+    options: {
+      auth: 'planties_jwt',
+    },
+  },
 ];
 
 module.exports = routes;

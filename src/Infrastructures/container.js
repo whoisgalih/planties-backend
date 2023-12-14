@@ -83,6 +83,7 @@ const DeleteCartItemByIdUseCase = require('../Applications/use_case/DeleteCartIt
 
 // Wishlist use case
 const AddWishlistItemUseCase = require('../Applications/use_case/AddItemToWishlistUseCase');
+const GetAllWishlistItemsUseCase = require('../Applications/use_case/GetAllWishlistItemsUseCase');
 
 // creating container
 const container = createContainer();
@@ -724,6 +725,19 @@ container.register([
           name: 'wishlistRepository',
           internal: WishlistRepository.name,
         },
+        {
+          name: 'wishlistItemRepository',
+          internal: WishlistItemRepository.name,
+        },
+      ],
+    },
+  },
+  {
+    key: GetAllWishlistItemsUseCase.name,
+    Class: GetAllWishlistItemsUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
         {
           name: 'wishlistItemRepository',
           internal: WishlistItemRepository.name,
