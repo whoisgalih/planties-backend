@@ -15,6 +15,14 @@ const routes = (handler) => [
       auth: 'planties_jwt',
     },
   },
+  {
+    method: 'DELETE',
+    path: '/wishlists/{id}',
+    handler: handler.deleteWishlistItemHandler,
+    options: {
+      auth: 'planties_jwt',
+    },
+  },
 ];
 
 module.exports = routes;

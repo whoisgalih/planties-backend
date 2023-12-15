@@ -1,4 +1,5 @@
 const AddItemToWishlistUseCase = require('../../../../Applications/use_case/AddItemToWishlistUseCase');
+const DeleteWishlistItemUseCase = require('../../../../Applications/use_case/DeleteWishlistItemUseCase');
 const GetAllWishlistItemsUseCase = require('../../../../Applications/use_case/GetAllWishlistItemsUseCase');
 
 class WishlistItemHandler {
@@ -7,6 +8,7 @@ class WishlistItemHandler {
 
     this.postWishlistItemHandler = this.postWishlistItemHandler.bind(this);
     this.getAllWishlistItemsHandler = this.getAllWishlistItemsHandler.bind(this);
+    this.deleteWishlistItemHandler = this.deleteWishlistItemHandler.bind(this);
   }
 
   async postWishlistItemHandler(request, h) {
@@ -39,6 +41,25 @@ class WishlistItemHandler {
       status: 'success',
       data: {
         wishlist_items: wishlistItems,
+      },
+    });
+
+    response.code(200);
+    return response;
+  }
+
+  async deleteWishlistItemHandler(request, h) {
+    const deleteWishlistItemUseCase = this._container.getInstance(DeleteWishlistItemUseCase.name);
+
+    const { id: user_id } = request.auth.credentials;
+    const { id } = request.params;
+
+    const deletedWishlist = await deleteWishlistItemUseCase.execute({ user_id, id });
+
+    const response = h.response({
+      status: 'success',
+      data: {
+        wishlist_item: deletedWishlist,
       },
     });
 
