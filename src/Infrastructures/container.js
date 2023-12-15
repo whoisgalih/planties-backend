@@ -9,6 +9,7 @@ const Jwt = require('@hapi/jwt');
 const pool = require('./database/postgres/pool');
 
 // service (repository, helper, manager, etc)
+// repository abstraction
 const UserRepository = require('../Domains/users/UserRepository');
 const OxygenRepository = require('../Domains/oxygens/OxygenRepository');
 const GardenRepository = require('../Domains/gardens/GardenRepository');
@@ -18,7 +19,13 @@ const RoleRepository = require('../Domains/roles/RoleRepository');
 const MarketplaceItemRepository = require('../Domains/marketplaceItems/MarketplaceItemRepository');
 const CartRepository = require('../Domains/carts/CartRepository');
 const CartItemRepository = require('../Domains/cartItems/CartItemRepository');
+const WishlistRepository = require('../Domains/wishlists/WishlistRepository');
+const WishlistItemRepository = require('../Domains/wishlistItems/WishlistItemRepository');
+
+// security
 const PasswordHash = require('../Applications/security/PasswordHash');
+
+// repository implementation
 const UserRepositoryPostgres = require('./repository/UserRepositoryPostgres');
 const OxygenRepositoryPostgres = require('./repository/OxygenRepositoryPostgres');
 const BcryptPasswordHash = require('./security/BcryptPasswordHash');
@@ -29,6 +36,8 @@ const RoleRepositoryPostgres = require('./repository/RoleRepositoryPostgres');
 const MarketplaceItemRepositoryPostgres = require('./repository/MarketplaceItemRepositoryPostgres');
 const CartRepositoryPostgres = require('./repository/CartRepositoryPostgres');
 const CartItemRepositoryPostgres = require('./repository/CartItemRepositoryPostgres');
+const WishlistRepositoryPostgres = require('./repository/WishlistRepositoryPostgres');
+const WishlistItemRepositoryPostgres = require('./repository/WishlistItemRepositoryPostgres');
 
 // use case
 const AddUserUseCase = require('../Applications/use_case/AddUserUseCase');
@@ -71,6 +80,11 @@ const AddCartItemUseCase = require('../Applications/use_case/AddCartItemUseCase'
 const GetCartUseCase = require('../Applications/use_case/GetCartUseCase');
 const EditCartItemUseCase = require('../Applications/use_case/EditCartItemUseCase');
 const DeleteCartItemByIdUseCase = require('../Applications/use_case/DeleteCartItemByIdUseCase');
+
+// Wishlist use case
+const AddWishlistItemUseCase = require('../Applications/use_case/AddItemToWishlistUseCase');
+const GetAllWishlistItemsUseCase = require('../Applications/use_case/GetAllWishlistItemsUseCase');
+const DeleteWishlistItemUseCase = require('../Applications/use_case/DeleteWishlistItemUseCase');
 
 // creating container
 const container = createContainer();
@@ -236,6 +250,34 @@ container.register([
       ],
     },
   },
+  {
+    key: WishlistRepository.name,
+    Class: WishlistRepositoryPostgres,
+    parameter: {
+      dependencies: [
+        {
+          concrete: pool,
+        },
+        {
+          concrete: nanoid,
+        },
+      ],
+    },
+  },
+  {
+    key: WishlistItemRepository.name,
+    Class: WishlistItemRepositoryPostgres,
+    parameter: {
+      dependencies: [
+        {
+          concrete: pool,
+        },
+        {
+          concrete: nanoid,
+        },
+      ],
+    },
+  },
 ]);
 
 // registering use cases
@@ -262,6 +304,10 @@ container.register([
         {
           name: 'cartRepository',
           internal: CartRepository.name,
+        },
+        {
+          name: 'wishlistRepository',
+          internal: WishlistRepository.name,
         },
       ],
     },
@@ -532,6 +578,8 @@ container.register([
       ],
     },
   },
+
+  // Marketplace use case
   {
     key: AddMarketplaceItemUseCase.name,
     Class: AddMarketplaceItemUseCase,
@@ -600,6 +648,8 @@ container.register([
       ],
     },
   },
+
+  // Cart use case
   {
     key: AddCartItemUseCase.name,
     Class: AddCartItemUseCase,
@@ -656,6 +706,55 @@ container.register([
         {
           name: 'cartItemRepository',
           internal: CartItemRepository.name,
+        },
+      ],
+    },
+  },
+
+  // Wishlist use case
+  {
+    key: AddWishlistItemUseCase.name,
+    Class: AddWishlistItemUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        {
+          name: 'marketplaceItemRepository',
+          internal: MarketplaceItemRepository.name,
+        },
+        {
+          name: 'wishlistRepository',
+          internal: WishlistRepository.name,
+        },
+        {
+          name: 'wishlistItemRepository',
+          internal: WishlistItemRepository.name,
+        },
+      ],
+    },
+  },
+  {
+    key: GetAllWishlistItemsUseCase.name,
+    Class: GetAllWishlistItemsUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        {
+          name: 'wishlistItemRepository',
+          internal: WishlistItemRepository.name,
+        },
+      ],
+    },
+  },
+  {
+    key: DeleteWishlistItemUseCase.name,
+    Class: DeleteWishlistItemUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        {
+          name: 'wishlistItemRepository',
+          internal: WishlistItemRepository.name,
         },
       ],
     },
