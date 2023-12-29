@@ -2,10 +2,10 @@
 const pool = require('../src/Infrastructures/database/postgres/pool');
 
 const UsersTableTestHelper = {
-  async addUser({ id = 'user-123', email = 'galih@planties.com', password = 'secret', fullname = 'Dicoding Indonesia' }) {
+  async addUser({ id = 'user-123', oxygen_id = 'oxygen-123', email = 'galih@planties.com', password = 'secret', name = 'Dicoding Indonesia', profileImage = 'profile-image.png' }) {
     const query = {
-      text: 'INSERT INTO users VALUES($1, $2, $3, $4)',
-      values: [id, email, password, fullname],
+      text: 'INSERT INTO users VALUES($1, $2, $3, $4, $5, $6)',
+      values: [id, oxygen_id, email, password, name, profileImage],
     };
 
     await pool.query(query);

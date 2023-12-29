@@ -17,7 +17,7 @@ describe('UserRepositoryPostgres', () => {
   describe('verifyAvailableEmail function', () => {
     it('should throw InvariantError when email not available', async () => {
       // Arrange
-      await UsersTableTestHelper.addUser({ email: 'galih@planties.com', fullname: 'Galih' }); // memasukan user baru dengan email galih@planties.com
+      await UsersTableTestHelper.addUser({ email: 'galih@planties.com', name: 'Galih' }); // memasukan user baru dengan email galih@planties.com
       const userRepositoryPostgres = new UserRepositoryPostgres(pool, {});
 
       // Action & Assert
@@ -39,7 +39,7 @@ describe('UserRepositoryPostgres', () => {
       const registerUser = new RegisterUser({
         email: 'galih@planties.com',
         password: 'secret_password',
-        fullname: 'Dicoding Indonesia',
+        name: 'Dicoding Indonesia',
       });
       const fakeIdGenerator = () => '123'; // stub!
       const userRepositoryPostgres = new UserRepositoryPostgres(pool, fakeIdGenerator);
