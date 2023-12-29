@@ -21,8 +21,6 @@ class CartRepositoryPostgres extends CartRepository {
   }
 
   async getActiveCartId(userId) {
-    console.log(userId);
-
     const query = {
       text: 'SELECT id FROM carts WHERE user_id = $1 AND is_active',
       values: [userId],
