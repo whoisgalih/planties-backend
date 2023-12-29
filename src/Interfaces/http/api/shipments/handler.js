@@ -1,10 +1,14 @@
 const AddShipmentUseCase = require('../../../../Applications/use_case/AddShipmentUseCase');
+const GetShipmentsUseCase = require('../../../../Applications/use_case/GetShipmentsUseCase');
+const GetShipmentByIdUseCase = require('../../../../Applications/use_case/GetShipmentByIdUseCase');
 
 class ShipmentHandler {
   constructor(container) {
     this._container = container;
 
     this.postShipmentHandler = this.postShipmentHandler.bind(this);
+    this.getShipmentsHandler = this.getShipmentsHandler.bind(this);
+    this.getShipmentByIdHandler = this.getShipmentByIdHandler.bind(this);
   }
 
   async postShipmentHandler(request, h) {
@@ -24,6 +28,29 @@ class ShipmentHandler {
 
     response.code(201);
     return response;
+  }
+
+  async getShipmentsHandler() {
+    const getShipmentsUseCase = this._container.getInstance(GetShipmentsUseCase.name);
+    const shipments = await getShipmentsUseCase.execute();
+    return {
+      status: 'success',
+      data: {
+        shipments,
+      },
+    };
+  }
+
+  async getShipmentByIdHandler(request) {
+    const getShipmentByIdUseCase = this._container.getInstance(GetShipmentByIdUseCase.name);
+    const { id } = request.params;
+    const shipment = await getShipmentByIdUseCase.execute({ id });
+    return {
+      status: 'success',
+      data: {
+        shipment,
+      },
+    };
   }
 }
 

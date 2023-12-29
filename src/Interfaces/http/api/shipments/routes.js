@@ -7,6 +7,16 @@ const routes = (handler) => [
       auth: 'planties_jwt',
     },
   },
+  {
+    method: 'GET',
+    path: '/shipments',
+    handler: handler.getShipmentsHandler,
+  },
+  {
+    method: 'GET',
+    path: '/shipments/{id}',
+    handler: handler.getShipmentByIdHandler,
+  },
 ];
 
 module.exports = routes;

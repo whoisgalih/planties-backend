@@ -90,6 +90,8 @@ const DeleteWishlistItemUseCase = require('../Applications/use_case/DeleteWishli
 
 // Shipment use case
 const AddShipmentUseCase = require('../Applications/use_case/AddShipmentUseCase');
+const GetShipmentsUseCase = require('../Applications/use_case/GetShipmentsUseCase');
+const GetShipmentByIdUseCase = require('../Applications/use_case/GetShipmentByIdUseCase');
 
 // creating container
 const container = createContainer();
@@ -778,6 +780,8 @@ container.register([
       ],
     },
   },
+
+  // Shipment use case
   {
     key: AddShipmentUseCase.name,
     Class: AddShipmentUseCase,
@@ -788,6 +792,32 @@ container.register([
           name: 'roleRepository',
           internal: RoleRepository.name,
         },
+        {
+          name: 'shipmentRepository',
+          internal: ShipmentRepository.name,
+        },
+      ],
+    },
+  },
+  {
+    key: GetShipmentsUseCase.name,
+    Class: GetShipmentsUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        {
+          name: 'shipmentRepository',
+          internal: ShipmentRepository.name,
+        },
+      ],
+    },
+  },
+  {
+    key: GetShipmentByIdUseCase.name,
+    Class: GetShipmentByIdUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
         {
           name: 'shipmentRepository',
           internal: ShipmentRepository.name,
