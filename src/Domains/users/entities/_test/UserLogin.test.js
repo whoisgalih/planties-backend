@@ -4,7 +4,7 @@ describe('UserLogin entities', () => {
   it('should throw error when payload does not contain needed property', () => {
     // Arrange
     const payload = {
-      username: 'dicoding',
+      email: 'dicoding',
     };
 
     // Action & Assert
@@ -14,7 +14,7 @@ describe('UserLogin entities', () => {
   it('should throw error when payload not meet data type specification', () => {
     // Arrange
     const payload = {
-      username: 'dicoding',
+      email: 'dicoding',
       password: 12345,
     };
 
@@ -25,7 +25,7 @@ describe('UserLogin entities', () => {
   it('should create UserLogin entities correctly', () => {
     // Arrange
     const payload = {
-      username: 'dicoding',
+      email: 'dicoding',
       password: '12345',
     };
 
@@ -34,7 +34,7 @@ describe('UserLogin entities', () => {
 
     // Assert
     expect(userLogin).toBeInstanceOf(UserLogin);
-    expect(userLogin.username).toEqual(payload.username);
+    expect(userLogin.email).toEqual(payload.email);
     expect(userLogin.password).toEqual(payload.password);
   });
 });

@@ -19,7 +19,7 @@ describe('/authentications endpoint', () => {
     it('should response 201 and new authentication', async () => {
       // Arrange
       const requestPayload = {
-        username: 'dicoding',
+        email: 'dicoding',
         password: 'secret',
       };
       const server = await createServer(container);
@@ -170,7 +170,9 @@ describe('/authentications endpoint', () => {
           password: 'secret',
         },
       });
-      const { data: { refreshToken } } = JSON.parse(loginResponse.payload);
+      const {
+        data: { refreshToken },
+      } = JSON.parse(loginResponse.payload);
 
       // Action
       const response = await server.inject({

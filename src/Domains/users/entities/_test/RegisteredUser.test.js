@@ -4,8 +4,7 @@ describe('a RegisteredUser entities', () => {
   it('should throw error when payload did not contain needed property', () => {
     // Arrange
     const payload = {
-      username: 'dicoding',
-      fullname: 'Dicoding Indonesia',
+      email: 'galih@planties.com',
     };
 
     // Action and Assert
@@ -16,8 +15,10 @@ describe('a RegisteredUser entities', () => {
     // Arrange
     const payload = {
       id: 123,
-      username: 'dicoding',
-      fullname: {},
+      oxygen_id: 111,
+      email: {},
+      name: [],
+      profileImage: 0,
     };
 
     // Action and Assert
@@ -28,8 +29,10 @@ describe('a RegisteredUser entities', () => {
     // Arrange
     const payload = {
       id: 'user-123',
-      username: 'dicoding',
-      fullname: 'Dicoding Indonesia',
+      oxygen_id: 'oxygen-123',
+      email: 'galih@planties.com',
+      name: 'Galih Akbar Nugraha',
+      profileImage: 'profile-image.png',
     };
 
     // Action
@@ -37,7 +40,9 @@ describe('a RegisteredUser entities', () => {
 
     // Assert
     expect(registeredUser.id).toEqual(payload.id);
-    expect(registeredUser.username).toEqual(payload.username);
-    expect(registeredUser.fullname).toEqual(payload.fullname);
+    expect(registeredUser.oxygen_id).toEqual(payload.oxygen_id);
+    expect(registeredUser.email).toEqual(payload.email);
+    expect(registeredUser.name).toEqual(payload.name);
+    expect(registeredUser.profileImage).toEqual(payload.profileImage);
   });
 });
