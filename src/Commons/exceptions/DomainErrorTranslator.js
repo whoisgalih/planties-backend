@@ -96,6 +96,10 @@ DomainErrorTranslator._directories = {
   // Add Item To Wishlist
   'ADD_ITEM_TO_WISHLIST.NOT_CONTAIN_NEEDED_PROPERTY': new InvariantError('tidak dapat menambahkan item ke wishlist karena properti yang dibutuhkan tidak ada'),
   'ADD_ITEM_TO_WISHLIST.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('tidak dapat menambahkan item ke wishlist karena tipe data tidak sesuai'),
+
+  // Add Shipment
+  'ADD_SHIPMENT.NOT_CONTAIN_NEEDED_PROPERTY': new InvariantError('tidak dapat membuat shipment baru karena properti yang dibutuhkan tidak ada'),
+  'ADD_SHIPMENT.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('tidak dapat membuat shipment baru karena tipe data tidak sesuai'),
 };
 
 module.exports = DomainErrorTranslator;

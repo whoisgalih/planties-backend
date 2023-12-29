@@ -21,6 +21,7 @@ const CartRepository = require('../Domains/carts/CartRepository');
 const CartItemRepository = require('../Domains/cartItems/CartItemRepository');
 const WishlistRepository = require('../Domains/wishlists/WishlistRepository');
 const WishlistItemRepository = require('../Domains/wishlistItems/WishlistItemRepository');
+const ShipmentRepository = require('../Domains/shipments/ShipmentRepository');
 
 // security
 const PasswordHash = require('../Applications/security/PasswordHash');
@@ -38,6 +39,7 @@ const CartRepositoryPostgres = require('./repository/CartRepositoryPostgres');
 const CartItemRepositoryPostgres = require('./repository/CartItemRepositoryPostgres');
 const WishlistRepositoryPostgres = require('./repository/WishlistRepositoryPostgres');
 const WishlistItemRepositoryPostgres = require('./repository/WishlistItemRepositoryPostgres');
+const ShipmentRepositoryPostgres = require('./repository/ShipmentRepositoryPostgres');
 
 // use case
 const AddUserUseCase = require('../Applications/use_case/AddUserUseCase');
@@ -85,6 +87,9 @@ const DeleteCartItemByIdUseCase = require('../Applications/use_case/DeleteCartIt
 const AddWishlistItemUseCase = require('../Applications/use_case/AddItemToWishlistUseCase');
 const GetAllWishlistItemsUseCase = require('../Applications/use_case/GetAllWishlistItemsUseCase');
 const DeleteWishlistItemUseCase = require('../Applications/use_case/DeleteWishlistItemUseCase');
+
+// Shipment use case
+const AddShipmentUseCase = require('../Applications/use_case/AddShipmentUseCase');
 
 // creating container
 const container = createContainer();
@@ -267,6 +272,20 @@ container.register([
   {
     key: WishlistItemRepository.name,
     Class: WishlistItemRepositoryPostgres,
+    parameter: {
+      dependencies: [
+        {
+          concrete: pool,
+        },
+        {
+          concrete: nanoid,
+        },
+      ],
+    },
+  },
+  {
+    key: ShipmentRepository.name,
+    Class: ShipmentRepositoryPostgres,
     parameter: {
       dependencies: [
         {
@@ -755,6 +774,23 @@ container.register([
         {
           name: 'wishlistItemRepository',
           internal: WishlistItemRepository.name,
+        },
+      ],
+    },
+  },
+  {
+    key: AddShipmentUseCase.name,
+    Class: AddShipmentUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        {
+          name: 'roleRepository',
+          internal: RoleRepository.name,
+        },
+        {
+          name: 'shipmentRepository',
+          internal: ShipmentRepository.name,
         },
       ],
     },
