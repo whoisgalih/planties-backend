@@ -1,6 +1,7 @@
 const AddShipmentUseCase = require('../../../../Applications/use_case/AddShipmentUseCase');
 const GetShipmentsUseCase = require('../../../../Applications/use_case/GetShipmentsUseCase');
 const GetShipmentByIdUseCase = require('../../../../Applications/use_case/GetShipmentByIdUseCase');
+const DeleteShipmentByIdUseCase = require('../../../../Applications/use_case/DeleteShipmentByIdUseCase');
 
 class ShipmentHandler {
   constructor(container) {
@@ -9,6 +10,7 @@ class ShipmentHandler {
     this.postShipmentHandler = this.postShipmentHandler.bind(this);
     this.getShipmentsHandler = this.getShipmentsHandler.bind(this);
     this.getShipmentByIdHandler = this.getShipmentByIdHandler.bind(this);
+    this.deleteShipmentByIdHandler = this.deleteShipmentByIdHandler.bind(this);
   }
 
   async postShipmentHandler(request, h) {
@@ -45,6 +47,19 @@ class ShipmentHandler {
     const getShipmentByIdUseCase = this._container.getInstance(GetShipmentByIdUseCase.name);
     const { id } = request.params;
     const shipment = await getShipmentByIdUseCase.execute({ id });
+    return {
+      status: 'success',
+      data: {
+        shipment,
+      },
+    };
+  }
+
+  async deleteShipmentByIdHandler(request) {
+    const deleteShipmentByIdUseCase = this._container.getInstance(DeleteShipmentByIdUseCase.name);
+    const { id } = request.params;
+    const { id: user_id } = request.auth.credentials;
+    const shipment = await deleteShipmentByIdUseCase.execute({ id, user_id });
     return {
       status: 'success',
       data: {

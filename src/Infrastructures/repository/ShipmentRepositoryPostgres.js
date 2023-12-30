@@ -43,6 +43,21 @@ class ShipmentRepositoryPostgres extends ShipmentRepository {
 
     return result.rows[0];
   }
+
+  async deleteShipment(id) {
+    const query = {
+      text: 'DELETE FROM shipments WHERE id = $1 RETURNING id, name, type, logo, price, eta',
+      values: [id],
+    };
+
+    const result = await this._pool.query(query);
+
+    if (!result.rowCount) {
+      throw new InvariantError('shipment tidak ditemukan');
+    }
+
+    return result.rows[0];
+  }
 }
 
 module.exports = ShipmentRepositoryPostgres;

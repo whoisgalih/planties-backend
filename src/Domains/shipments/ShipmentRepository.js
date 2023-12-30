@@ -10,6 +10,10 @@ class ShipmentsRepository {
   async getShipmentById(id) {
     throw new Error('ERR_METHOD_NOT_IMPLEMENTED');
   }
+
+  async deleteShipment(id) {
+    throw new Error('ERR_METHOD_NOT_IMPLEMENTED');
+  }
 }
 
 module.exports = ShipmentsRepository;

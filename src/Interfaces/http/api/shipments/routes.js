@@ -17,6 +17,14 @@ const routes = (handler) => [
     path: '/shipments/{id}',
     handler: handler.getShipmentByIdHandler,
   },
+  {
+    method: 'DELETE',
+    path: '/shipments/{id}',
+    handler: handler.deleteShipmentByIdHandler,
+    options: {
+      auth: 'planties_jwt',
+    },
+  },
 ];
 
 module.exports = routes;
