@@ -487,6 +487,14 @@ container.register([
           name: 'gardenRepository',
           internal: GardenRepository.name,
         },
+        {
+          name: 'gardenPhotoRepository',
+          internal: GardenPhotoRepository.name,
+        },
+        {
+          name: 'imageRepository',
+          internal: ImageRepository.name,
+        },
       ],
     },
   },

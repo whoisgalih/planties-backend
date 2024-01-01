@@ -18,10 +18,10 @@ class GardensHandler {
   async postGardenHandler(request, h) {
     const addGardenUseCase = this._container.getInstance(AddGardenUseCase.name);
 
-    const { name, type } = request.payload;
+    const { name, type, photos } = request.payload;
     const { id: user_id } = request.auth.credentials;
 
-    const addedGarden = await addGardenUseCase.execute({ name, type, user_id });
+    const addedGarden = await addGardenUseCase.execute({ name, type, user_id, photos });
 
     const response = h.response({
       status: 'success',
