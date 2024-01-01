@@ -16,11 +16,11 @@ class PlantsHandler {
   async postPlantHandler(request, h) {
     const addPlantUseCase = this._container.getInstance(AddPlantUseCase.name);
 
-    const { name } = request.payload;
+    const { name, photos } = request.payload;
     const { id: garden_id } = request.params;
     const { id: user_id } = request.auth.credentials;
 
-    const addedPlant = await addPlantUseCase.execute({ name, garden_id, user_id });
+    const addedPlant = await addPlantUseCase.execute({ name, garden_id, user_id, photos });
 
     const response = h.response({
       status: 'success',
