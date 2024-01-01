@@ -90,6 +90,9 @@ const GetReminderByIdUseCase = require('../Applications/use_case/GetReminderById
 const EditReminderUseCase = require('../Applications/use_case/EditReminderUseCase');
 const DeleteReminderByIdUseCase = require('../Applications/use_case/DeleteReminderByIdUseCase');
 
+// Oxygen use case
+const GetOxygenLeaderboardUseCase = require('../Applications/use_case/GetOxygenLeaderboardUseCase');
+
 // Marketplace use case
 // Admin
 const AddMarketplaceItemUseCase = require('../Applications/use_case/AddMarketplaceItemUseCase');
@@ -772,6 +775,21 @@ container.register([
         {
           name: 'reminderRepository',
           internal: ReminderRepository.name,
+        },
+      ],
+    },
+  },
+
+  // Oxygen use case
+  {
+    key: GetOxygenLeaderboardUseCase.name,
+    Class: GetOxygenLeaderboardUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        {
+          name: 'oxygenRepository',
+          internal: OxygenRepository.name,
         },
       ],
     },

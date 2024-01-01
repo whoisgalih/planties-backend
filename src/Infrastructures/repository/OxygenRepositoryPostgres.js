@@ -32,8 +32,8 @@ class OxygenRepositoryPostgres extends OxygenRepository {
 
   async getOxygenRank() {
     const query = {
-      // rank oxygen
-      text: 'SELECT id, oxygen, RANK() OVER (ORDER BY oxygen DESC) FROM oxygen',
+      // rank oxygen join users
+      text: 'SELECT oxygen, RANK() OVER (ORDER BY oxygen DESC), name FROM oxygen INNER JOIN users ON oxygen.id = users.oxygen_id',
     };
 
     const result = await this._pool.query(query);
