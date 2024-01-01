@@ -80,6 +80,7 @@ const DeletePlantByIdUseCase = require('../Applications/use_case/DeletePlantById
 
 // Plant photo use case
 const AddPlantPhotoUseCase = require('../Applications/use_case/AddPlantPhotoUseCase');
+const DeletePlantPhotoByIdUseCase = require('../Applications/use_case/DeletePlantPhotoByIdUseCase');
 
 // Reminder use case
 const AddReminderUseCase = require('../Applications/use_case/AddReminderUseCase');
@@ -645,6 +646,23 @@ container.register([
         {
           name: 'imageRepository',
           internal: ImageRepository.name,
+        },
+      ],
+    },
+  },
+  {
+    key: DeletePlantPhotoByIdUseCase.name,
+    Class: DeletePlantPhotoByIdUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        {
+          name: 'plantRepository',
+          internal: PlantRepository.name,
+        },
+        {
+          name: 'plantPhotoRepository',
+          internal: PlantPhotoRepository.name,
         },
       ],
     },
