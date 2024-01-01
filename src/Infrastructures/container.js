@@ -49,6 +49,7 @@ const ImageRepositoryS3 = require('./repository/ImageRepositoryS3');
 // User use case
 const AddUserUseCase = require('../Applications/use_case/AddUserUseCase');
 const GetUserProfileUseCase = require('../Applications/use_case/GetUserProfileUseCase');
+const UpdateUserProfileUseCase = require('../Applications/use_case/UpdateUserProfileUseCase');
 
 // Authentication use case
 const AuthenticationTokenManager = require('../Applications/security/AuthenticationTokenManager');
@@ -395,6 +396,23 @@ container.register([
         {
           name: 'oxygenRepository',
           internal: OxygenRepository.name,
+        },
+      ],
+    },
+  },
+  {
+    key: UpdateUserProfileUseCase.name,
+    Class: UpdateUserProfileUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        {
+          name: 'userRepository',
+          internal: UserRepository.name,
+        },
+        {
+          name: 'imageRepository',
+          internal: ImageRepository.name,
         },
       ],
     },

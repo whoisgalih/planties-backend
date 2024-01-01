@@ -18,6 +18,10 @@ class GetUserProfileUseCase {
 
     user.oxygen = oxygen.oxygen;
 
+    if (user.profile_image) {
+      user.profile_image = `${process.env.AWS_S3_PHOTO_BASE_URL}${user.profile_image}`;
+    }
+
     return {
       name: user.name,
       profile_image: user.profile_image,

@@ -6,7 +6,7 @@ const routes = (handler) => [
     options: {
       auth: 'planties_jwt',
       payload: {
-        maxBytes: 5000000,
+        maxBytes: process.env.MAX_FILE_SIZE,
       },
     },
   },

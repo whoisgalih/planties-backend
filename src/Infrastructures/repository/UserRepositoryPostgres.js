@@ -82,6 +82,19 @@ class UserRepositoryPostgres extends UserRepository {
 
     return result.rows[0];
   }
+
+  async updateUserProfile(updateUserProfile) {
+    const { id, name, profile_image } = updateUserProfile;
+
+    const query = {
+      text: 'UPDATE users SET name = $1, profile_image = $2 WHERE id = $3 RETURNING name, profile_image',
+      values: [name, profile_image, id],
+    };
+
+    const result = await this._pool.query(query);
+
+    return result.rows[0];
+  }
 }
 
 module.exports = UserRepositoryPostgres;
