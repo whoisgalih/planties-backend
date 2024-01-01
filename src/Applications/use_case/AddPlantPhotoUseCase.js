@@ -22,3 +22,5 @@ class AddPlantPhotoUseCase {
     return addedPlantPhoto;
   }
 }
+
+module.exports = AddPlantPhotoUseCase;

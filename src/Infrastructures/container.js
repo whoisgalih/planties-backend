@@ -25,6 +25,7 @@ const WishlistItemRepository = require('../Domains/wishlistItems/WishlistItemRep
 const ShipmentRepository = require('../Domains/shipments/ShipmentRepository');
 const GardenPhotoRepository = require('../Domains/gardenPhotos/GardenPhotoRepository');
 const ImageRepository = require('../Domains/images/ImageRepository');
+const PlantPhotoRepository = require('../Domains/plantPhotos/PlantPhotoRepository');
 
 // security
 const PasswordHash = require('../Applications/security/PasswordHash');
@@ -45,6 +46,7 @@ const WishlistItemRepositoryPostgres = require('./repository/WishlistItemReposit
 const ShipmentRepositoryPostgres = require('./repository/ShipmentRepositoryPostgres');
 const GardenPhotoRepositoryPostgres = require('./repository/GardenPhotoRepositoryPostgres');
 const ImageRepositoryS3 = require('./repository/ImageRepositoryS3');
+const PlantPhotoRepositoryPostgres = require('./repository/PlantPhotoRepositoryPostgres');
 
 // User use case
 const AddUserUseCase = require('../Applications/use_case/AddUserUseCase');
@@ -75,6 +77,9 @@ const AddPlantUseCase = require('../Applications/use_case/AddPlantUseCase');
 const GetPlantsByGardenIdUseCase = require('../Applications/use_case/GetPlantsByGardenIdUseCase');
 const GetPlantByIdUseCase = require('../Applications/use_case/GetPlantByIdUseCase');
 const DeletePlantByIdUseCase = require('../Applications/use_case/DeletePlantByIdUseCase');
+
+// Plant photo use case
+const AddPlantPhotoUseCase = require('../Applications/use_case/AddPlantPhotoUseCase');
 
 // Reminder use case
 const AddReminderUseCase = require('../Applications/use_case/AddReminderUseCase');
@@ -341,6 +346,17 @@ container.register([
       ],
     },
   },
+  {
+    key: PlantPhotoRepository.name,
+    Class: PlantPhotoRepositoryPostgres,
+    parameter: {
+      dependencies: [
+        {
+          concrete: pool,
+        },
+      ],
+    },
+  },
 ]);
 
 // registering use cases
@@ -598,6 +614,29 @@ container.register([
         {
           name: 'plantRepository',
           internal: PlantRepository.name,
+        },
+      ],
+    },
+  },
+
+  // Plant photo use case
+  {
+    key: AddPlantPhotoUseCase.name,
+    Class: AddPlantPhotoUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        {
+          name: 'plantRepository',
+          internal: PlantRepository.name,
+        },
+        {
+          name: 'plantPhotoRepository',
+          internal: PlantPhotoRepository.name,
+        },
+        {
+          name: 'imageRepository',
+          internal: ImageRepository.name,
         },
       ],
     },
