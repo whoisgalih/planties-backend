@@ -1,4 +1,4 @@
-class deleteGardenPhotoById {
+class DeleteGardenPhotoById {
   constructor(payload) {
     this._verifyPayload(payload);
 
@@ -20,4 +20,4 @@ class deleteGardenPhotoById {
   }
 }
 
-module.exports = deleteGardenPhotoById;
+module.exports = DeleteGardenPhotoById;
