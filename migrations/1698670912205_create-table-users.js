@@ -23,7 +23,7 @@ exports.up = (pgm) => {
       type: 'TEXT',
       notNull: true,
     },
-    profileImage: {
+    profile_image: {
       type: 'TEXT',
     },
   });

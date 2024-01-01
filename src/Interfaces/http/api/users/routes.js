@@ -12,6 +12,17 @@ const routes = (handler) => [
       auth: 'planties_jwt',
     },
   },
+  {
+    method: 'PUT',
+    path: '/users',
+    handler: handler.putUserHandler,
+    options: {
+      auth: 'planties_jwt',
+      payload: {
+        maxBytes: process.env.MAX_FILE_SIZE,
+      },
+    },
+  },
 ];
 
 module.exports = routes;
