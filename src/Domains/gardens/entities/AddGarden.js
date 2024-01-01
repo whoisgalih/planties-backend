@@ -13,7 +13,6 @@ class AddGarden {
   }
 
   _verifyPayload({ name, type, user_id, photos }) {
-    console.log(name, type, user_id, photos);
     if (!name || !type || !user_id || !photos) {
       throw new Error('ADD_GARDEN.NOT_CONTAIN_NEEDED_PROPERTY');
     }

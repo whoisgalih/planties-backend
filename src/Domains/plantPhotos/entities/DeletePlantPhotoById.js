@@ -10,7 +10,6 @@ class DeletePlantPhotoById {
   }
 
   _verifyPayload({ id, plant_id, user_id }) {
-    console.log(id, plant_id, user_id);
     if (!id || !plant_id || !user_id) {
       throw new Error('DELETE_PLANT_PHOTO.NOT_CONTAIN_NEEDED_PROPERTY');
     }

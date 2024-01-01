@@ -17,7 +17,6 @@ class AddMarketplaceItem {
   }
 
   _verifyPayload({ name, price, discount, rating, desc, watering, scale, height, type }) {
-    console.log(name, price, discount, rating, desc, watering, scale, height, type);
     if (!name || !price || discount === undefined || !rating || !desc || !watering || !scale || !height || !type) {
       throw new Error('ADD_MARKETPLACE_ITEM.NOT_CONTAIN_NEEDED_PROPERTY');
     }
