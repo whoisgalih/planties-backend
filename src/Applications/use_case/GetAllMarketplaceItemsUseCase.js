@@ -5,8 +5,9 @@ class GetMarketplaceItemsUseCase {
   }
 
   async execute(payload) {
-    await this._roleRepository.checkIfUserIsAdmin(payload);
-    return await this._marketplaceItemRepository.getAllMarketplaceItems();
+    const { type } = payload;
+
+    return await this._marketplaceItemRepository.getAllMarketplaceItems({ type });
   }
 }
 

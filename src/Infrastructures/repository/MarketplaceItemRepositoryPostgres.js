@@ -9,12 +9,12 @@ class MarketplaceItemRepositoryPostgres extends MarketplaceItemRepository {
   }
 
   async addMarketplaceItem(marketplaceItem) {
-    const { name, price, discount, rating, desc, watering, scale, height } = marketplaceItem;
+    const { name, price, discount, rating, desc, watering, scale, height, type } = marketplaceItem;
     const id = `marketplace-${this._idGenerator()}`;
 
     const query = {
-      text: 'INSERT INTO marketplace_items VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING id, name, cover, price, discount, rating, sold, marketplace_items.desc, watering, scale, height',
-      values: [id, name, null, price, discount, rating, 0, desc, watering, scale, height],
+      text: 'INSERT INTO marketplace_items VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING id, name, cover, price, discount, rating, sold, marketplace_items.desc, watering, scale, height, type',
+      values: [id, name, null, price, discount, rating, 0, desc, watering, scale, height, type],
     };
 
     const result = await this._pool.query(query);
@@ -22,9 +22,10 @@ class MarketplaceItemRepositoryPostgres extends MarketplaceItemRepository {
     return result.rows[0];
   }
 
-  async getAllMarketplaceItems() {
+  async getAllMarketplaceItems({ type }) {
     const query = {
-      text: 'SELECT * FROM marketplace_items',
+      text: 'SELECT * FROM marketplace_items WHERE (type = $1 OR $1 IS NULL)',
+      values: [type],
     };
 
     const result = await this._pool.query(query);
