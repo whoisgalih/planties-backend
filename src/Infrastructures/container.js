@@ -65,6 +65,7 @@ const AddGardenUseCase = require('../Applications/use_case/AddGardenUseCase');
 const GetGardensUseCase = require('../Applications/use_case/GetGardensUseCase');
 const GetGardenByIdUseCase = require('../Applications/use_case/GetGardenByIdUseCase');
 const DeleteGardenByIdUseCase = require('../Applications/use_case/DeleteGardenByIdUseCase');
+const EditGardenUseCase = require('../Applications/use_case/EditGardenUseCase');
 
 // Garden photo use case
 const AddGardenPhotoUseCase = require('../Applications/use_case/AddGardenPhotoUseCase');
@@ -522,6 +523,19 @@ container.register([
   {
     key: DeleteGardenByIdUseCase.name,
     Class: DeleteGardenByIdUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        {
+          name: 'gardenRepository',
+          internal: GardenRepository.name,
+        },
+      ],
+    },
+  },
+  {
+    key: EditGardenUseCase.name,
+    Class: EditGardenUseCase,
     parameter: {
       injectType: 'destructuring',
       dependencies: [

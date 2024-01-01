@@ -2,6 +2,7 @@ const AddGardenUseCase = require('../../../../Applications/use_case/AddGardenUse
 const GetGardensUseCase = require('../../../../Applications/use_case/GetGardensUseCase');
 const GetGardenByIdUseCase = require('../../../../Applications/use_case/GetGardenByIdUseCase');
 const DeleteGardenByIdUseCase = require('../../../../Applications/use_case/DeleteGardenByIdUseCase');
+const EditGardenUseCase = require('../../../../Applications/use_case/EditGardenUseCase');
 
 class GardensHandler {
   constructor(container) {
@@ -11,6 +12,7 @@ class GardensHandler {
     this.getGardensHandler = this.getGardensHandler.bind(this);
     this.getGardenByIdHandler = this.getGardenByIdHandler.bind(this);
     this.deleteGardenByIdHandler = this.deleteGardenByIdHandler.bind(this);
+    this.putGardenByIdHandler = this.putGardenByIdHandler.bind(this);
   }
 
   async postGardenHandler(request, h) {
@@ -73,6 +75,25 @@ class GardensHandler {
     const { id } = request.params;
 
     const garden = await deleteGardenByIdUseCase.execute({ user_id, id });
+
+    const response = h.response({
+      status: 'success',
+      data: {
+        garden,
+      },
+    });
+    response.code(200);
+    return response;
+  }
+
+  async putGardenByIdHandler(request, h) {
+    const editGardenUseCase = await this._container.getInstance(EditGardenUseCase.name);
+
+    const { id: user_id } = request.auth.credentials;
+    const { id } = request.params;
+    const { name, type } = request.payload;
+
+    const garden = await editGardenUseCase.execute({ user_id, id, name, type });
 
     const response = h.response({
       status: 'success',
