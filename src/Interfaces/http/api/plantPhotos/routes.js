@@ -10,6 +10,14 @@ const routes = (handler) => [
       },
     },
   },
+  {
+    method: 'DELETE',
+    path: '/gardens/{garden_id}/plants/{plant_id}/photos/{id}',
+    handler: handler.deletePlantPhotoByIdHandler,
+    options: {
+      auth: 'planties_jwt',
+    },
+  },
 ];
 
 module.exports = routes;
