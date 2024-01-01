@@ -7,6 +7,7 @@ const { nanoid } = require('nanoid');
 const bcrypt = require('bcrypt');
 const Jwt = require('@hapi/jwt');
 const pool = require('./database/postgres/pool');
+const { s3, bucketName } = require('./storage/aws-s3/s3');
 
 // service (repository, helper, manager, etc)
 // repository abstraction
@@ -22,6 +23,8 @@ const CartItemRepository = require('../Domains/cartItems/CartItemRepository');
 const WishlistRepository = require('../Domains/wishlists/WishlistRepository');
 const WishlistItemRepository = require('../Domains/wishlistItems/WishlistItemRepository');
 const ShipmentRepository = require('../Domains/shipments/ShipmentRepository');
+const GardenPhotoRepository = require('../Domains/gardenPhotos/GardenPhotoRepository');
+const ImageRepository = require('../Domains/images/ImageRepository');
 
 // security
 const PasswordHash = require('../Applications/security/PasswordHash');
@@ -40,6 +43,8 @@ const CartItemRepositoryPostgres = require('./repository/CartItemRepositoryPostg
 const WishlistRepositoryPostgres = require('./repository/WishlistRepositoryPostgres');
 const WishlistItemRepositoryPostgres = require('./repository/WishlistItemRepositoryPostgres');
 const ShipmentRepositoryPostgres = require('./repository/ShipmentRepositoryPostgres');
+const GardenPhotoRepositoryPostgres = require('./repository/GardenPhotoRepositoryPostgres');
+const ImageRepositoryS3 = require('./repository/ImageRepositoryS3');
 
 // use case
 const AddUserUseCase = require('../Applications/use_case/AddUserUseCase');
@@ -56,6 +61,9 @@ const AddGardenUseCase = require('../Applications/use_case/AddGardenUseCase');
 const GetGardensUseCase = require('../Applications/use_case/GetGardensUseCase');
 const GetGardenByIdUseCase = require('../Applications/use_case/GetGardenByIdUseCase');
 const DeleteGardenByIdUseCase = require('../Applications/use_case/DeleteGardenByIdUseCase');
+
+// Garden photo use case
+const AddGardenPhotoUseCase = require('../Applications/use_case/AddGardenPhotoUseCase');
 
 // Plant use case
 const AddPlantUseCase = require('../Applications/use_case/AddPlantUseCase');
@@ -296,6 +304,34 @@ container.register([
         },
         {
           concrete: nanoid,
+        },
+      ],
+    },
+  },
+  {
+    key: GardenPhotoRepository.name,
+    Class: GardenPhotoRepositoryPostgres,
+    parameter: {
+      dependencies: [
+        {
+          concrete: pool,
+        },
+      ],
+    },
+  },
+  {
+    key: ImageRepository.name,
+    Class: ImageRepositoryS3,
+    parameter: {
+      dependencies: [
+        {
+          concrete: s3,
+        },
+        {
+          concrete: nanoid,
+        },
+        {
+          concrete: bucketName,
         },
       ],
     },
@@ -839,6 +875,27 @@ container.register([
         {
           name: 'shipmentRepository',
           internal: ShipmentRepository.name,
+        },
+      ],
+    },
+  },
+  {
+    key: AddGardenPhotoUseCase.name,
+    Class: AddGardenPhotoUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        {
+          name: 'gardenRepository',
+          internal: GardenRepository.name,
+        },
+        {
+          name: 'gardenPhotoRepository',
+          internal: GardenPhotoRepository.name,
+        },
+        {
+          name: 'imageRepository',
+          internal: ImageRepository.name,
         },
       ],
     },
