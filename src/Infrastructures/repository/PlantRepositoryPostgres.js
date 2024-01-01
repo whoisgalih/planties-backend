@@ -66,6 +66,18 @@ class PlantRepositoryPostgres extends PlantRepository {
 
     return result.rows[0];
   }
+
+  async getPlantCountByUserId(user_id) {
+    const query = {
+      // join garden
+      text: 'SELECT COUNT(plants.id) FROM plants INNER JOIN gardens ON plants.garden_id = gardens.id WHERE gardens.user_id = $1',
+      values: [user_id],
+    };
+
+    const result = await this._pool.query(query);
+
+    return result.rows[0].count;
+  }
 }
 
 module.exports = PlantRepositoryPostgres;

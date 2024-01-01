@@ -82,6 +82,17 @@ class GardenRepositoryPostgres extends GardenRepository {
 
     return new AddedGarden({ ...result.rows[0] });
   }
+
+  async getGardenCountByUserId(user_id) {
+    const query = {
+      text: 'SELECT COUNT(id) FROM gardens WHERE user_id = $1',
+      values: [user_id],
+    };
+
+    const result = await this._pool.query(query);
+
+    return result.rows[0].count;
+  }
 }
 
 module.exports = GardenRepositoryPostgres;

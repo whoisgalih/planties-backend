@@ -18,6 +18,17 @@ class OxygenRepositoryPostgres extends OxygenRepository {
     const result = await this._pool.query(query);
     return new AddedOxygen({ ...result.rows[0] });
   }
+
+  async getOxygenById(id) {
+    const query = {
+      text: 'SELECT * FROM oxygen WHERE id = $1',
+      values: [id],
+    };
+
+    const result = await this._pool.query(query);
+
+    return result.rows[0];
+  }
 }
 
 module.exports = OxygenRepositoryPostgres;

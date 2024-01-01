@@ -46,8 +46,11 @@ const ShipmentRepositoryPostgres = require('./repository/ShipmentRepositoryPostg
 const GardenPhotoRepositoryPostgres = require('./repository/GardenPhotoRepositoryPostgres');
 const ImageRepositoryS3 = require('./repository/ImageRepositoryS3');
 
-// use case
+// User use case
 const AddUserUseCase = require('../Applications/use_case/AddUserUseCase');
+const GetUserProfileUseCase = require('../Applications/use_case/GetUserProfileUseCase');
+
+// Authentication use case
 const AuthenticationTokenManager = require('../Applications/security/AuthenticationTokenManager');
 const JwtTokenManager = require('./security/JwtTokenManager');
 const LoginUserUseCase = require('../Applications/use_case/LoginUserUseCase');
@@ -341,7 +344,7 @@ container.register([
 
 // registering use cases
 container.register([
-  // Authentication use case
+  // User use case
   {
     key: AddUserUseCase.name,
     Class: AddUserUseCase,
@@ -371,6 +374,33 @@ container.register([
       ],
     },
   },
+  {
+    key: GetUserProfileUseCase.name,
+    Class: GetUserProfileUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        {
+          name: 'userRepository',
+          internal: UserRepository.name,
+        },
+        {
+          name: 'gardenRepository',
+          internal: GardenRepository.name,
+        },
+        {
+          name: 'plantRepository',
+          internal: PlantRepository.name,
+        },
+        {
+          name: 'oxygenRepository',
+          internal: OxygenRepository.name,
+        },
+      ],
+    },
+  },
+
+  // Authentication use case
   {
     key: LoginUserUseCase.name,
     Class: LoginUserUseCase,
