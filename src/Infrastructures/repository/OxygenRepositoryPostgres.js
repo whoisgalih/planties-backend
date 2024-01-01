@@ -29,6 +29,29 @@ class OxygenRepositoryPostgres extends OxygenRepository {
 
     return result.rows[0];
   }
+
+  async getOxygenRank() {
+    const query = {
+      // rank oxygen
+      text: 'SELECT id, oxygen, RANK() OVER (ORDER BY oxygen DESC) FROM oxygen',
+    };
+
+    const result = await this._pool.query(query);
+
+    return result.rows;
+  }
+
+  async getUserOxygenRank(user_id) {
+    const query = {
+      // rank oxygen join users
+      text: 'SELECT oxygen, RANK() OVER (ORDER BY oxygen DESC) FROM oxygen INNER JOIN users ON oxygen.id = users.oxygen_id WHERE users.id = $1',
+      values: [user_id],
+    };
+
+    const result = await this._pool.query(query);
+
+    return result.rows[0];
+  }
 }
 
 module.exports = OxygenRepositoryPostgres;

@@ -1,3 +1,5 @@
+const { parse } = require('dotenv');
+
 class GetUserProfileUseCase {
   constructor({ userRepository, gardenRepository, plantRepository, oxygenRepository }) {
     this._userRepository = userRepository;
@@ -14,9 +16,10 @@ class GetUserProfileUseCase {
     user.gardenCount = gardenCount;
     user.plantCount = plantCount;
 
-    const oxygen = await this._oxygenRepository.getOxygenById(user.oxygen_id);
+    const oxygen = await this._oxygenRepository.getUserOxygenRank(userId);
 
     user.oxygen = oxygen.oxygen;
+    user.oxygenRank = oxygen.rank;
 
     if (user.profile_image) {
       user.profile_image = `${process.env.AWS_S3_PHOTO_BASE_URL}${user.profile_image}`;
@@ -25,9 +28,10 @@ class GetUserProfileUseCase {
     return {
       name: user.name,
       profile_image: user.profile_image,
-      gardenCount: user.gardenCount,
-      plantCount: user.plantCount,
+      gardenCount: parseInt(user.gardenCount),
+      plantCount: parseInt(user.plantCount),
       oxygen: user.oxygen,
+      oxygenRank: parseInt(user.oxygenRank),
     };
   }
 }
