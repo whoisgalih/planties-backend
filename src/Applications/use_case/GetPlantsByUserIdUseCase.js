@@ -6,7 +6,14 @@ class GetPlantsByUserIdUseCase {
   async execute(useCasePayload) {
     const { id, limit } = useCasePayload;
 
-    return this._plantRepository.getAllPlantsByUserId(id, limit);
+    const plants = await this._plantRepository.getAllPlantsByUserId(id, limit);
+    plants.forEach((plant) => {
+      if (plant.banner) {
+        plant.banner = `${process.env.AWS_S3_PHOTO_BASE_URL}${plant.banner}`;
+      }
+    });
+
+    return plants;
   }
 }
 
