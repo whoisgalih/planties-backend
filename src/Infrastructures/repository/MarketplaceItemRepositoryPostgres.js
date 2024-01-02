@@ -109,6 +109,32 @@ class MarketplaceItemRepositoryPostgres extends MarketplaceItemRepository {
 
     return result.rows[0];
   }
+
+  async getItemById(item_id) {
+    const query = {
+      text: 'SELECT * FROM marketplace_items WHERE id = $1',
+      values: [item_id],
+    };
+
+    const result = await this._pool.query(query);
+
+    if (!result.rowCount) {
+      throw new InvariantError('Item tidak ditemukan');
+    }
+
+    return result.rows[0];
+  }
+
+  async addSoldCount(item_id, quantity) {
+    const query = {
+      text: 'UPDATE marketplace_items SET sold = sold + $1 WHERE id = $2 RETURNING id',
+      values: [quantity, item_id],
+    };
+
+    const result = await this._pool.query(query);
+
+    return result.rows[0];
+  }
 }
 
 module.exports = MarketplaceItemRepositoryPostgres;

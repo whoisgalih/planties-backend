@@ -34,6 +34,21 @@ class CartRepositoryPostgres extends CartRepository {
 
     return result.rows[0].id;
   }
+
+  async updateCartStatus(cartId, status) {
+    const query = {
+      text: 'UPDATE carts SET is_active = $1 WHERE id = $2 RETURNING id, user_id, is_active',
+      values: [status, cartId],
+    };
+
+    const result = await this._pool.query(query);
+
+    if (!result.rowCount) {
+      throw new InvariantError('Cart tidak ditemukan');
+    }
+
+    return result.rows[0];
+  }
 }
 
 module.exports = CartRepositoryPostgres;

@@ -28,6 +28,7 @@ const ImageRepository = require('../Domains/images/ImageRepository');
 const PlantPhotoRepository = require('../Domains/plantPhotos/PlantPhotoRepository');
 const PaymentRepository = require('../Domains/payments/PaymentRepository');
 const AddressRepository = require('../Domains/addresses/AddressRepository');
+const TransactionRepository = require('../Domains/transactions/TransactionRepository');
 
 // security
 const PasswordHash = require('../Applications/security/PasswordHash');
@@ -51,6 +52,7 @@ const ImageRepositoryS3 = require('./repository/ImageRepositoryS3');
 const PlantPhotoRepositoryPostgres = require('./repository/PlantPhotoRepositoryPostgres');
 const PaymentRepositoryPostgres = require('./repository/PaymentRepositoryPostgres');
 const AddressRepositoryPostgres = require('./repository/AddressRepositoryPostgres');
+const TransactionRepositoryPostgres = require('./repository/TransactionRepositoryPostgres');
 
 // User use case
 const AddUserUseCase = require('../Applications/use_case/AddUserUseCase');
@@ -135,6 +137,9 @@ const GetAddressesUseCase = require('../Applications/use_case/GetAddressesUseCas
 const GetAddressByIdUseCase = require('../Applications/use_case/GetAddressByIdUseCase');
 const EditAddressUseCase = require('../Applications/use_case/EditAddressByIdUseCase');
 const DeleteAddressByIdUseCase = require('../Applications/use_case/DeleteAddressByIdUseCase');
+
+// Transaction use case
+const AddTransactionUseCase = require('../Applications/use_case/AddTransactionUseCase');
 
 // creating container
 const container = createContainer();
@@ -398,6 +403,20 @@ container.register([
   {
     key: AddressRepository.name,
     Class: AddressRepositoryPostgres,
+    parameter: {
+      dependencies: [
+        {
+          concrete: pool,
+        },
+        {
+          concrete: nanoid,
+        },
+      ],
+    },
+  },
+  {
+    key: TransactionRepository.name,
+    Class: TransactionRepositoryPostgres,
     parameter: {
       dependencies: [
         {
@@ -1291,6 +1310,45 @@ container.register([
         {
           name: 'addressRepository',
           internal: AddressRepository.name,
+        },
+      ],
+    },
+  },
+
+  // Transaction use case
+  {
+    key: AddTransactionUseCase.name,
+    Class: AddTransactionUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        {
+          name: 'transactionRepository',
+          internal: TransactionRepository.name,
+        },
+        {
+          name: 'marketplaceItemRepository',
+          internal: MarketplaceItemRepository.name,
+        },
+        {
+          name: 'shipmentRepository',
+          internal: ShipmentRepository.name,
+        },
+        {
+          name: 'paymentRepository',
+          internal: PaymentRepository.name,
+        },
+        {
+          name: 'addressRepository',
+          internal: AddressRepository.name,
+        },
+        {
+          name: 'cartRepository',
+          internal: CartRepository.name,
+        },
+        {
+          name: 'cartItemRepository',
+          internal: CartItemRepository.name,
         },
       ],
     },
