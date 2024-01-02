@@ -47,6 +47,38 @@ class AddressRepositoryPostgres extends AddressRepository {
 
     return result.rows[0];
   }
+
+  async editAddress(editAddress) {
+    const { id, user_id, title, recipient, address, city, province, phone, latitude, longitude, postalcode } = editAddress;
+
+    const query = {
+      text: 'UPDATE addresses SET title = $1, recipient = $2, address = $3, city = $4, province = $5, phone = $6, latitude = $7, longitude = $8, postalcode = $9 WHERE id = $10 AND user_id = $11 RETURNING id, title, recipient, address, city, province, phone, latitude, longitude, postalcode',
+      values: [title, recipient, address, city, province, phone, latitude, longitude, postalcode, id, user_id],
+    };
+
+    const result = await this._pool.query(query);
+
+    if (!result.rowCount) {
+      throw new NotFoundError('Gagal memperbarui address. Id tidak ditemukan');
+    }
+
+    return result.rows[0];
+  }
+
+  async deleteAddressById({ user_id, id }) {
+    const query = {
+      text: 'DELETE FROM addresses WHERE id = $1 AND user_id = $2 RETURNING id, title, recipient, address, city, province, phone, latitude, longitude, postalcode',
+      values: [id, user_id],
+    };
+
+    const result = await this._pool.query(query);
+
+    if (!result.rowCount) {
+      throw new NotFoundError('Gagal menghapus address. Id tidak ditemukan');
+    }
+
+    return result.rows[0];
+  }
 }
 
 module.exports = AddressRepositoryPostgres;

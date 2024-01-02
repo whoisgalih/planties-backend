@@ -133,6 +133,8 @@ const DeletePaymentByIdUseCase = require('../Applications/use_case/DeletePayment
 const AddAddressUseCase = require('../Applications/use_case/AddAddressUseCase');
 const GetAddressesUseCase = require('../Applications/use_case/GetAddressesUseCase');
 const GetAddressByIdUseCase = require('../Applications/use_case/GetAddressByIdUseCase');
+const EditAddressUseCase = require('../Applications/use_case/EditAddressByIdUseCase');
+const DeleteAddressByIdUseCase = require('../Applications/use_case/DeleteAddressByIdUseCase');
 
 // creating container
 const container = createContainer();
@@ -1257,6 +1259,32 @@ container.register([
   {
     key: GetAddressByIdUseCase.name,
     Class: GetAddressByIdUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        {
+          name: 'addressRepository',
+          internal: AddressRepository.name,
+        },
+      ],
+    },
+  },
+  {
+    key: EditAddressUseCase.name,
+    Class: EditAddressUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        {
+          name: 'addressRepository',
+          internal: AddressRepository.name,
+        },
+      ],
+    },
+  },
+  {
+    key: DeleteAddressByIdUseCase.name,
+    Class: DeleteAddressByIdUseCase,
     parameter: {
       injectType: 'destructuring',
       dependencies: [
