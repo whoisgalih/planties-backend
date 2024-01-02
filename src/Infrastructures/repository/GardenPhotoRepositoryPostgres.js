@@ -17,11 +17,16 @@ class GardenPhotoRepositoryPostgres extends GardenPhotoRepository {
     return result.rows[0];
   }
 
-  async getAllGardenPhotos(garden_id) {
+  async getAllGardenPhotos(garden_id, limit) {
     const query = {
       text: 'SELECT id FROM garden_photos WHERE garden_id = $1',
       values: [garden_id],
     };
+
+    if (limit) {
+      query.text += ' LIMIT $2';
+      query.values.push(limit);
+    }
 
     const result = await this._pool.query(query);
 
