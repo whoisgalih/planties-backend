@@ -4,9 +4,9 @@ class GetPlantsByUserIdUseCase {
   }
 
   async execute(useCasePayload) {
-    const { id } = useCasePayload;
+    const { id, limit } = useCasePayload;
 
-    return this._plantRepository.getAllPlantsByUserId(id);
+    return this._plantRepository.getAllPlantsByUserId(id, limit);
   }
 }
 

@@ -95,9 +95,10 @@ class PlantsHandler {
   async getPlantsByUserIdHandler(request, h) {
     const getPlantsByUserIdUseCase = await this._container.getInstance(GetPlantsByUserIdUseCase.name);
 
+    const { limit } = request.query;
     const { id } = request.auth.credentials;
 
-    const plants = await getPlantsByUserIdUseCase.execute({ id });
+    const plants = await getPlantsByUserIdUseCase.execute({ id, limit });
 
     const response = h.response({
       status: 'success',
