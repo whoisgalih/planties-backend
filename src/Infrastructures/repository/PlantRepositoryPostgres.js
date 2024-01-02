@@ -32,6 +32,17 @@ class PlantRepositoryPostgres extends PlantRepository {
     return result.rows;
   }
 
+  async getPlantsBannerByGardenId(garden_id) {
+    const query = {
+      text: 'SELECT banner FROM plants WHERE garden_id = $1 LIMIT 3',
+      values: [garden_id],
+    };
+
+    const result = await this._pool.query(query);
+
+    return result.rows;
+  }
+
   async verifyIfPlantExists(id) {
     const query = {
       text: 'SELECT * FROM plants WHERE id = $1',
