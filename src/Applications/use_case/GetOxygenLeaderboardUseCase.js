@@ -7,6 +7,7 @@ class GetOxygenLeaderboardUseCase {
     const oxygen = await this.oxygenRepository.getOxygenRank();
 
     return oxygen.map((o) => ({
+      id: o.id,
       oxygen: o.oxygen,
       rank: parseInt(o.rank),
       name: o.name,

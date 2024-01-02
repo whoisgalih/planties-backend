@@ -92,6 +92,7 @@ const DeleteReminderByIdUseCase = require('../Applications/use_case/DeleteRemind
 
 // Oxygen use case
 const GetOxygenLeaderboardUseCase = require('../Applications/use_case/GetOxygenLeaderboardUseCase');
+const GetUserRankUseCase = require('../Applications/use_case/GetUserRankUseCase');
 
 // Marketplace use case
 // Admin
@@ -788,6 +789,19 @@ container.register([
   {
     key: GetOxygenLeaderboardUseCase.name,
     Class: GetOxygenLeaderboardUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        {
+          name: 'oxygenRepository',
+          internal: OxygenRepository.name,
+        },
+      ],
+    },
+  },
+  {
+    key: GetUserRankUseCase.name,
+    Class: GetUserRankUseCase,
     parameter: {
       injectType: 'destructuring',
       dependencies: [
