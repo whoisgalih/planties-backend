@@ -9,12 +9,12 @@ class PlantRepositoryPostgres extends PlantRepository {
   }
 
   async addPlant(addPlant) {
-    const { name, user_id, garden_id } = addPlant;
+    const { name, user_id, garden_id, banner } = addPlant;
     const id = `plant-${this._idGenerator()}`;
 
     const query = {
-      text: 'INSERT INTO plants VALUES($1, $2, $3, $4) RETURNING id, name, banner, user_id, garden_id',
-      values: [id, garden_id, user_id, name],
+      text: 'INSERT INTO plants VALUES($1, $2, $3, $4, $5) RETURNING id, name, banner, user_id, garden_id',
+      values: [id, garden_id, user_id, name, banner],
     };
 
     const result = await this._pool.query(query);

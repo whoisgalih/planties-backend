@@ -1,4 +1,5 @@
 const AddPlant = require('../../Domains/plants/entities/AddPlant');
+const AddedPlant = require('../../Domains/plants/entities/AddedPlant');
 
 class AddPlantUseCase {
   constructor({ gardenRepository, plantRepository, plantPhotoRepository, imageRepository }) {
@@ -14,7 +15,13 @@ class AddPlantUseCase {
     await this._gardenRepository.verifyIfGardenExists(addPlant.garden_id);
     await this._gardenRepository.verifyGardenOwner(addPlant.user_id, addPlant.garden_id);
 
+    const { imageUrl, name } = await this._imageRepository.uploadImage(addPlant.banner, 'plant-banner');
+
+    addPlant.banner = name;
+
     const plant = await this._plantRepository.addPlant(addPlant);
+    plant.banner = imageUrl;
+
     plant.photos = [];
 
     for (const photo of addPlant.photos) {
@@ -28,7 +35,7 @@ class AddPlantUseCase {
       plant.photos.push(imageUrl);
     }
 
-    return plant;
+    return new AddedPlant(plant);
   }
 }
 

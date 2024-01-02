@@ -1,10 +1,11 @@
 const GetPlant = require('../../Domains/plants/entities/GetPlant');
-const AddedPlant = require('../../Domains/plants/entities/AddedPlant');
+const GetPlantDetail = require('../../Domains/plants/entities/GetPlantDetail');
 
 class GetPlantById {
-  constructor({ gardenRepository, plantRepository }) {
+  constructor({ gardenRepository, plantRepository, plantPhotoRepository }) {
     this._gardenRepository = gardenRepository;
     this._plantRepository = plantRepository;
+    this._plantPhotoRepository = plantPhotoRepository;
   }
 
   async execute(payload) {
@@ -14,8 +15,18 @@ class GetPlantById {
     await this._gardenRepository.verifyGardenOwner(getPlant.user_id, getPlant.garden_id);
 
     const plant = await this._plantRepository.getPlantById(getPlant.id);
+    if (plant.banner) {
+      plant.banner = `${process.env.AWS_S3_PHOTO_BASE_URL}${plant.banner}`;
+    }
 
-    return new AddedPlant(plant);
+    plant.photos = [];
+
+    const plantPhotos = await this._plantPhotoRepository.getAllPlantPhotos(getPlant.id);
+    plantPhotos.forEach((photo) => {
+      plant.photos.push(`${process.env.AWS_S3_PHOTO_BASE_URL}${photo.id}`);
+    });
+
+    return new GetPlantDetail(plant);
   }
 }
 
