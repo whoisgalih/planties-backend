@@ -7,6 +7,7 @@ const { nanoid } = require('nanoid');
 const bcrypt = require('bcrypt');
 const Jwt = require('@hapi/jwt');
 const pool = require('./database/postgres/pool');
+const { s3, bucketName } = require('./storage/aws-s3/s3');
 
 // service (repository, helper, manager, etc)
 // repository abstraction
@@ -22,6 +23,9 @@ const CartItemRepository = require('../Domains/cartItems/CartItemRepository');
 const WishlistRepository = require('../Domains/wishlists/WishlistRepository');
 const WishlistItemRepository = require('../Domains/wishlistItems/WishlistItemRepository');
 const ShipmentRepository = require('../Domains/shipments/ShipmentRepository');
+const GardenPhotoRepository = require('../Domains/gardenPhotos/GardenPhotoRepository');
+const ImageRepository = require('../Domains/images/ImageRepository');
+const PlantPhotoRepository = require('../Domains/plantPhotos/PlantPhotoRepository');
 
 // security
 const PasswordHash = require('../Applications/security/PasswordHash');
@@ -40,9 +44,16 @@ const CartItemRepositoryPostgres = require('./repository/CartItemRepositoryPostg
 const WishlistRepositoryPostgres = require('./repository/WishlistRepositoryPostgres');
 const WishlistItemRepositoryPostgres = require('./repository/WishlistItemRepositoryPostgres');
 const ShipmentRepositoryPostgres = require('./repository/ShipmentRepositoryPostgres');
+const GardenPhotoRepositoryPostgres = require('./repository/GardenPhotoRepositoryPostgres');
+const ImageRepositoryS3 = require('./repository/ImageRepositoryS3');
+const PlantPhotoRepositoryPostgres = require('./repository/PlantPhotoRepositoryPostgres');
 
-// use case
+// User use case
 const AddUserUseCase = require('../Applications/use_case/AddUserUseCase');
+const GetUserProfileUseCase = require('../Applications/use_case/GetUserProfileUseCase');
+const UpdateUserProfileUseCase = require('../Applications/use_case/UpdateUserProfileUseCase');
+
+// Authentication use case
 const AuthenticationTokenManager = require('../Applications/security/AuthenticationTokenManager');
 const JwtTokenManager = require('./security/JwtTokenManager');
 const LoginUserUseCase = require('../Applications/use_case/LoginUserUseCase');
@@ -56,12 +67,22 @@ const AddGardenUseCase = require('../Applications/use_case/AddGardenUseCase');
 const GetGardensUseCase = require('../Applications/use_case/GetGardensUseCase');
 const GetGardenByIdUseCase = require('../Applications/use_case/GetGardenByIdUseCase');
 const DeleteGardenByIdUseCase = require('../Applications/use_case/DeleteGardenByIdUseCase');
+const EditGardenUseCase = require('../Applications/use_case/EditGardenUseCase');
+
+// Garden photo use case
+const AddGardenPhotoUseCase = require('../Applications/use_case/AddGardenPhotoUseCase');
+const DeleteGardenPhotoByIdUseCase = require('../Applications/use_case/DeleteGardenPhotoByIdUseCase');
 
 // Plant use case
 const AddPlantUseCase = require('../Applications/use_case/AddPlantUseCase');
 const GetPlantsByGardenIdUseCase = require('../Applications/use_case/GetPlantsByGardenIdUseCase');
 const GetPlantByIdUseCase = require('../Applications/use_case/GetPlantByIdUseCase');
 const DeletePlantByIdUseCase = require('../Applications/use_case/DeletePlantByIdUseCase');
+const GetPlantsByUserIdUseCase = require('../Applications/use_case/GetPlantsByUserIdUseCase');
+
+// Plant photo use case
+const AddPlantPhotoUseCase = require('../Applications/use_case/AddPlantPhotoUseCase');
+const DeletePlantPhotoByIdUseCase = require('../Applications/use_case/DeletePlantPhotoByIdUseCase');
 
 // Reminder use case
 const AddReminderUseCase = require('../Applications/use_case/AddReminderUseCase');
@@ -69,6 +90,10 @@ const GetRemindersByGardenIdUseCase = require('../Applications/use_case/GetRemin
 const GetReminderByIdUseCase = require('../Applications/use_case/GetReminderByIdUseCase');
 const EditReminderUseCase = require('../Applications/use_case/EditReminderUseCase');
 const DeleteReminderByIdUseCase = require('../Applications/use_case/DeleteReminderByIdUseCase');
+
+// Oxygen use case
+const GetOxygenLeaderboardUseCase = require('../Applications/use_case/GetOxygenLeaderboardUseCase');
+const GetUserRankUseCase = require('../Applications/use_case/GetUserRankUseCase');
 
 // Marketplace use case
 // Admin
@@ -92,6 +117,7 @@ const DeleteWishlistItemUseCase = require('../Applications/use_case/DeleteWishli
 const AddShipmentUseCase = require('../Applications/use_case/AddShipmentUseCase');
 const GetShipmentsUseCase = require('../Applications/use_case/GetShipmentsUseCase');
 const GetShipmentByIdUseCase = require('../Applications/use_case/GetShipmentByIdUseCase');
+const DeleteShipmentByIdUseCase = require('../Applications/use_case/DeleteShipmentByIdUseCase');
 
 // creating container
 const container = createContainer();
@@ -299,11 +325,50 @@ container.register([
       ],
     },
   },
+  {
+    key: GardenPhotoRepository.name,
+    Class: GardenPhotoRepositoryPostgres,
+    parameter: {
+      dependencies: [
+        {
+          concrete: pool,
+        },
+      ],
+    },
+  },
+  {
+    key: ImageRepository.name,
+    Class: ImageRepositoryS3,
+    parameter: {
+      dependencies: [
+        {
+          concrete: s3,
+        },
+        {
+          concrete: nanoid,
+        },
+        {
+          concrete: bucketName,
+        },
+      ],
+    },
+  },
+  {
+    key: PlantPhotoRepository.name,
+    Class: PlantPhotoRepositoryPostgres,
+    parameter: {
+      dependencies: [
+        {
+          concrete: pool,
+        },
+      ],
+    },
+  },
 ]);
 
 // registering use cases
 container.register([
-  // Authentication use case
+  // User use case
   {
     key: AddUserUseCase.name,
     Class: AddUserUseCase,
@@ -333,6 +398,50 @@ container.register([
       ],
     },
   },
+  {
+    key: GetUserProfileUseCase.name,
+    Class: GetUserProfileUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        {
+          name: 'userRepository',
+          internal: UserRepository.name,
+        },
+        {
+          name: 'gardenRepository',
+          internal: GardenRepository.name,
+        },
+        {
+          name: 'plantRepository',
+          internal: PlantRepository.name,
+        },
+        {
+          name: 'oxygenRepository',
+          internal: OxygenRepository.name,
+        },
+      ],
+    },
+  },
+  {
+    key: UpdateUserProfileUseCase.name,
+    Class: UpdateUserProfileUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        {
+          name: 'userRepository',
+          internal: UserRepository.name,
+        },
+        {
+          name: 'imageRepository',
+          internal: ImageRepository.name,
+        },
+      ],
+    },
+  },
+
+  // Authentication use case
   {
     key: LoginUserUseCase.name,
     Class: LoginUserUseCase,
@@ -400,6 +509,14 @@ container.register([
           name: 'gardenRepository',
           internal: GardenRepository.name,
         },
+        {
+          name: 'gardenPhotoRepository',
+          internal: GardenPhotoRepository.name,
+        },
+        {
+          name: 'imageRepository',
+          internal: ImageRepository.name,
+        },
       ],
     },
   },
@@ -412,6 +529,10 @@ container.register([
         {
           name: 'gardenRepository',
           internal: GardenRepository.name,
+        },
+        {
+          name: 'plantRepository',
+          internal: PlantRepository.name,
         },
       ],
     },
@@ -426,12 +547,29 @@ container.register([
           name: 'gardenRepository',
           internal: GardenRepository.name,
         },
+        {
+          name: 'gardenPhotoRepository',
+          internal: GardenPhotoRepository.name,
+        },
       ],
     },
   },
   {
     key: DeleteGardenByIdUseCase.name,
     Class: DeleteGardenByIdUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        {
+          name: 'gardenRepository',
+          internal: GardenRepository.name,
+        },
+      ],
+    },
+  },
+  {
+    key: EditGardenUseCase.name,
+    Class: EditGardenUseCase,
     parameter: {
       injectType: 'destructuring',
       dependencies: [
@@ -457,6 +595,14 @@ container.register([
         {
           name: 'plantRepository',
           internal: PlantRepository.name,
+        },
+        {
+          name: 'plantPhotoRepository',
+          internal: PlantPhotoRepository.name,
+        },
+        {
+          name: 'imageRepository',
+          internal: ImageRepository.name,
         },
       ],
     },
@@ -492,6 +638,10 @@ container.register([
           name: 'plantRepository',
           internal: PlantRepository.name,
         },
+        {
+          name: 'plantPhotoRepository',
+          internal: PlantPhotoRepository.name,
+        },
       ],
     },
   },
@@ -508,6 +658,59 @@ container.register([
         {
           name: 'plantRepository',
           internal: PlantRepository.name,
+        },
+      ],
+    },
+  },
+  {
+    key: GetPlantsByUserIdUseCase.name,
+    Class: GetPlantsByUserIdUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        {
+          name: 'plantRepository',
+          internal: PlantRepository.name,
+        },
+      ],
+    },
+  },
+
+  // Plant photo use case
+  {
+    key: AddPlantPhotoUseCase.name,
+    Class: AddPlantPhotoUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        {
+          name: 'plantRepository',
+          internal: PlantRepository.name,
+        },
+        {
+          name: 'plantPhotoRepository',
+          internal: PlantPhotoRepository.name,
+        },
+        {
+          name: 'imageRepository',
+          internal: ImageRepository.name,
+        },
+      ],
+    },
+  },
+  {
+    key: DeletePlantPhotoByIdUseCase.name,
+    Class: DeletePlantPhotoByIdUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        {
+          name: 'plantRepository',
+          internal: PlantRepository.name,
+        },
+        {
+          name: 'plantPhotoRepository',
+          internal: PlantPhotoRepository.name,
         },
       ],
     },
@@ -600,6 +803,34 @@ container.register([
     },
   },
 
+  // Oxygen use case
+  {
+    key: GetOxygenLeaderboardUseCase.name,
+    Class: GetOxygenLeaderboardUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        {
+          name: 'oxygenRepository',
+          internal: OxygenRepository.name,
+        },
+      ],
+    },
+  },
+  {
+    key: GetUserRankUseCase.name,
+    Class: GetUserRankUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        {
+          name: 'oxygenRepository',
+          internal: OxygenRepository.name,
+        },
+      ],
+    },
+  },
+
   // Marketplace use case
   {
     key: AddMarketplaceItemUseCase.name,
@@ -614,6 +845,10 @@ container.register([
         {
           name: 'marketplaceItemRepository',
           internal: MarketplaceItemRepository.name,
+        },
+        {
+          name: 'imageRepository',
+          internal: ImageRepository.name,
         },
       ],
     },
@@ -821,6 +1056,63 @@ container.register([
         {
           name: 'shipmentRepository',
           internal: ShipmentRepository.name,
+        },
+      ],
+    },
+  },
+  {
+    key: DeleteShipmentByIdUseCase.name,
+    Class: DeleteShipmentByIdUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        {
+          name: 'roleRepository',
+          internal: RoleRepository.name,
+        },
+        {
+          name: 'shipmentRepository',
+          internal: ShipmentRepository.name,
+        },
+      ],
+    },
+  },
+
+  // Garden photos
+  {
+    key: AddGardenPhotoUseCase.name,
+    Class: AddGardenPhotoUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        {
+          name: 'gardenRepository',
+          internal: GardenRepository.name,
+        },
+        {
+          name: 'gardenPhotoRepository',
+          internal: GardenPhotoRepository.name,
+        },
+        {
+          name: 'imageRepository',
+          internal: ImageRepository.name,
+        },
+      ],
+    },
+  },
+  {
+    key: DeleteGardenPhotoByIdUseCase.name,
+    Class: DeleteGardenPhotoByIdUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        {
+          name: 'gardenRepository',
+          internal: GardenRepository.name,
+        },
+        {
+          name: 'gardenPhotoRepository',
+          internal: GardenPhotoRepository.name,
         },
       ],
     },

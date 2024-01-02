@@ -9,12 +9,12 @@ class PlantRepositoryPostgres extends PlantRepository {
   }
 
   async addPlant(addPlant) {
-    const { name, user_id, garden_id } = addPlant;
+    const { name, user_id, garden_id, banner } = addPlant;
     const id = `plant-${this._idGenerator()}`;
 
     const query = {
-      text: 'INSERT INTO plants VALUES($1, $2, $3, $4) RETURNING id, name, banner, user_id, garden_id',
-      values: [id, garden_id, user_id, name],
+      text: 'INSERT INTO plants VALUES($1, $2, $3, $4, $5) RETURNING id, name, banner, user_id, garden_id',
+      values: [id, garden_id, user_id, name, banner],
     };
 
     const result = await this._pool.query(query);
@@ -24,6 +24,17 @@ class PlantRepositoryPostgres extends PlantRepository {
   async getPlantsByGardenId(garden_id) {
     const query = {
       text: 'SELECT * FROM plants WHERE garden_id = $1',
+      values: [garden_id],
+    };
+
+    const result = await this._pool.query(query);
+
+    return result.rows;
+  }
+
+  async getPlantsBannerByGardenId(garden_id) {
+    const query = {
+      text: 'SELECT banner FROM plants WHERE garden_id = $1 LIMIT 3',
       values: [garden_id],
     };
 
@@ -65,6 +76,54 @@ class PlantRepositoryPostgres extends PlantRepository {
     const result = await this._pool.query(query);
 
     return result.rows[0];
+  }
+
+  async getPlantCountByUserId(user_id) {
+    const query = {
+      // join garden
+      text: 'SELECT COUNT(plants.id) FROM plants INNER JOIN gardens ON plants.garden_id = gardens.id WHERE gardens.user_id = $1',
+      values: [user_id],
+    };
+
+    const result = await this._pool.query(query);
+
+    return result.rows[0].count;
+  }
+
+  async verifyPlantOwner(user_id, plant_id) {
+    const query = {
+      // join garden
+      text: 'SELECT plants.id FROM plants INNER JOIN gardens ON plants.garden_id = gardens.id WHERE plants.id = $1 AND gardens.user_id = $2',
+      values: [plant_id, user_id],
+    };
+
+    const result = await this._pool.query(query);
+
+    if (!result.rowCount) {
+      throw new AuthorizationError('Anda bukan pemilik plant ini');
+    }
+  }
+
+  async getAllPlantsByUserId(user_id, limit) {
+    let queryText = 'SELECT plants.id, plants.name, plants.banner, plants.garden_id FROM plants INNER JOIN gardens ON plants.garden_id = gardens.id WHERE gardens.user_id = $1';
+    let queryValues = [user_id];
+
+    let queryValuesCounter = 2;
+
+    if (limit) {
+      queryText += ` LIMIT $${queryValuesCounter++}`;
+      queryValues.push(limit);
+    }
+
+    const query = {
+      // join garden
+      text: queryText,
+      values: queryValues,
+    };
+
+    const result = await this._pool.query(query);
+
+    return result.rows;
   }
 }
 

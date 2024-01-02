@@ -1,21 +1,18 @@
 class AddedPlant {
   constructor(payload) {
-    payload.photos = payload.photos || [];
-
     this._verifyPayload(payload);
 
-    const { id, name, banner, photos, user_id, garden_id } = payload;
+    const { id, name, banner, user_id, garden_id } = payload;
 
     this.id = id;
     this.name = name;
     this.banner = banner;
-    this.photos = photos;
     this.user_id = user_id;
     this.garden_id = garden_id;
   }
 
-  _verifyPayload({ id, name, banner, photos, user_id, garden_id }) {
-    if (!id || !name || !photos || !user_id || !garden_id) {
+  _verifyPayload({ id, name, banner, user_id, garden_id }) {
+    if (!id || !name || !user_id || !garden_id) {
       throw new Error('ADDED_PLANT.NOT_CONTAIN_NEEDED_PROPERTY');
     }
 

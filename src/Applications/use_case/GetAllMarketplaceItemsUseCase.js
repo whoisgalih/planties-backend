@@ -5,8 +5,16 @@ class GetMarketplaceItemsUseCase {
   }
 
   async execute(payload) {
-    await this._roleRepository.checkIfUserIsAdmin(payload);
-    return await this._marketplaceItemRepository.getAllMarketplaceItems();
+    const { type, name, minprice, maxprice, sortby, sort, limit } = payload;
+
+    const marketplaceItems = await this._marketplaceItemRepository.getAllMarketplaceItems({ type, name, minprice, maxprice, sortby, sort, limit });
+    marketplaceItems.forEach((item) => {
+      if (item.cover) {
+        item.cover = `${process.env.AWS_S3_PHOTO_BASE_URL}${item.cover}`;
+      }
+    });
+
+    return marketplaceItems;
   }
 }
 

@@ -44,7 +44,6 @@ class WishlistItemRepositoryPostgres extends WishlistItemRepository {
   }
 
   async deleteWishlistItem({ id, user_id }) {
-    console.log(id, user_id);
     const query = {
       text: 'DELETE FROM wishlist_items USING wishlists WHERE wishlist_items.id = $1 AND wishlists.id = wishlist_items.wishlist_id AND wishlists.user_id = $2 RETURNING wishlist_items.id, wishlist_items.marketplace_item_id, wishlist_items.wishlist_id',
       values: [id, user_id],

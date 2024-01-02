@@ -16,10 +16,10 @@ class MarketplaceItemHandler {
   async postMarketplaceItemHandler(request, h) {
     const addMarketplaceItemUseCase = this._container.getInstance(AddMarketplaceItemUseCase.name);
 
-    const { name, price, discount, rating, desc, watering, scale, height } = request.payload;
+    const { name, price, discount, rating, desc, watering, scale, height, type, cover } = request.payload;
     const { id: user_id } = request.auth.credentials;
 
-    const addedMarketplaceItem = await addMarketplaceItemUseCase.execute({ name, price, discount, rating, desc, watering, scale, height, user_id });
+    const addedMarketplaceItem = await addMarketplaceItemUseCase.execute({ name, price, discount, rating, desc, watering, scale, height, user_id, type, cover });
 
     const response = h.response({
       status: 'success',
@@ -34,9 +34,9 @@ class MarketplaceItemHandler {
   async getMarketplaceItemsHandler(request, h) {
     const getAllMarketplaceItemsUseCase = this._container.getInstance(GetAllMarketplaceItemsUseCase.name);
 
-    const { id: user_id } = request.auth.credentials;
+    const query = request.query;
 
-    const marketplaceItems = await getAllMarketplaceItemsUseCase.execute(user_id);
+    const marketplaceItems = await getAllMarketplaceItemsUseCase.execute(query);
 
     return {
       status: 'success',
@@ -50,9 +50,8 @@ class MarketplaceItemHandler {
     const getMarketplaceItemByIdUseCase = this._container.getInstance(GetMarketplaceItemByIdUseCase.name);
 
     const { id } = request.params;
-    const { id: user_id } = request.auth.credentials;
 
-    const marketplaceItem = await getMarketplaceItemByIdUseCase.execute({ id, user_id });
+    const marketplaceItem = await getMarketplaceItemByIdUseCase.execute({ id });
 
     return {
       status: 'success',

@@ -67,6 +67,34 @@ class UserRepositoryPostgres extends UserRepository {
 
     return id;
   }
+
+  async getUserById(id) {
+    const query = {
+      text: 'SELECT id, name, profile_image, oxygen_id FROM users WHERE id = $1',
+      values: [id],
+    };
+
+    const result = await this._pool.query(query);
+
+    if (!result.rowCount) {
+      throw new InvariantError('user tidak ditemukan');
+    }
+
+    return result.rows[0];
+  }
+
+  async updateUserProfile(updateUserProfile) {
+    const { id, name, profile_image } = updateUserProfile;
+
+    const query = {
+      text: 'UPDATE users SET name = $1, profile_image = $2 WHERE id = $3 RETURNING name, profile_image',
+      values: [name, profile_image, id],
+    };
+
+    const result = await this._pool.query(query);
+
+    return result.rows[0];
+  }
 }
 
 module.exports = UserRepositoryPostgres;

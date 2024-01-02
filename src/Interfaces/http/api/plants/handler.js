@@ -2,6 +2,7 @@ const AddPlantUseCase = require('../../../../Applications/use_case/AddPlantUseCa
 const GetPlantsByGardenIdUseCase = require('../../../../Applications/use_case/GetPlantsByGardenIdUseCase');
 const GetPlantByIdUseCase = require('../../../../Applications/use_case/GetPlantByIdUseCase');
 const DeletePlantUseCase = require('../../../../Applications/use_case/DeletePlantByIdUseCase');
+const GetPlantsByUserIdUseCase = require('../../../../Applications/use_case/GetPlantsByUserIdUseCase');
 
 class PlantsHandler {
   constructor(container) {
@@ -11,16 +12,17 @@ class PlantsHandler {
     this.getPlantsHandler = this.getPlantsHandler.bind(this);
     this.getPlantByIdHandler = this.getPlantByIdHandler.bind(this);
     this.deletePlantByIdHandler = this.deletePlantByIdHandler.bind(this);
+    this.getPlantsByUserIdHandler = this.getPlantsByUserIdHandler.bind(this);
   }
 
   async postPlantHandler(request, h) {
     const addPlantUseCase = this._container.getInstance(AddPlantUseCase.name);
 
-    const { name } = request.payload;
+    const { name, photos, banner } = request.payload;
     const { id: garden_id } = request.params;
     const { id: user_id } = request.auth.credentials;
 
-    const addedPlant = await addPlantUseCase.execute({ name, garden_id, user_id });
+    const addedPlant = await addPlantUseCase.execute({ name, garden_id, user_id, photos, banner });
 
     const response = h.response({
       status: 'success',
@@ -83,6 +85,25 @@ class PlantsHandler {
       status: 'success',
       data: {
         plant,
+      },
+    });
+
+    response.code(200);
+    return response;
+  }
+
+  async getPlantsByUserIdHandler(request, h) {
+    const getPlantsByUserIdUseCase = await this._container.getInstance(GetPlantsByUserIdUseCase.name);
+
+    const { limit } = request.query;
+    const { id } = request.auth.credentials;
+
+    const plants = await getPlantsByUserIdUseCase.execute({ id, limit });
+
+    const response = h.response({
+      status: 'success',
+      data: {
+        plants,
       },
     });
 

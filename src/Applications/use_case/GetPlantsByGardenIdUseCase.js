@@ -14,7 +14,13 @@ class GetPlantsByGardenId {
     await this._gardenRepository.verifyGardenOwner(garden.user_id, garden.garden_id);
 
     const plants = await this._plantRepository.getPlantsByGardenId(garden.garden_id);
-    return plants.map((plant) => new AddedPlant(plant));
+    return plants.map((plant) => {
+      if (plant.banner) {
+        plant.banner = `${process.env.AWS_S3_PHOTO_BASE_URL}${plant.banner}`;
+      }
+
+      return new AddedPlant(plant);
+    });
   }
 }
 module.exports = GetPlantsByGardenId;

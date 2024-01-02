@@ -5,6 +5,9 @@ const routes = (handler) => [
     handler: handler.postPlantHandler,
     options: {
       auth: 'planties_jwt',
+      payload: {
+        maxBytes: process.env.MAX_FILE_SIZE,
+      },
     },
   },
   {
@@ -27,6 +30,14 @@ const routes = (handler) => [
     method: 'DELETE',
     path: '/gardens/{garden_id}/plants/{plant_id}',
     handler: handler.deletePlantByIdHandler,
+    options: {
+      auth: 'planties_jwt',
+    },
+  },
+  {
+    method: 'GET',
+    path: '/plants',
+    handler: handler.getPlantsByUserIdHandler,
     options: {
       auth: 'planties_jwt',
     },

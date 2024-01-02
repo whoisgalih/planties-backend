@@ -5,23 +5,20 @@ const routes = (handler) => [
     handler: handler.postMarketplaceItemHandler,
     options: {
       auth: 'planties_jwt',
+      payload: {
+        maxBytes: process.env.MAX_FILE_SIZE,
+      },
     },
   },
   {
     method: 'GET',
     path: '/marketplace/items',
     handler: handler.getMarketplaceItemsHandler,
-    options: {
-      auth: 'planties_jwt',
-    },
   },
   {
     method: 'GET',
     path: '/marketplace/items/{id}',
     handler: handler.getMarketplaceItemByIdHandler,
-    options: {
-      auth: 'planties_jwt',
-    },
   },
   {
     method: 'DELETE',

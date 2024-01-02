@@ -17,6 +17,10 @@ DomainErrorTranslator._directories = {
   'REGISTERED_USER.NOT_CONTAIN_NEEDED_PROPERTY': new InvariantError('tidak dapat membuat user baru karena properti yang dibutuhkan tidak ada'),
   'REGISTERED_USER.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('tidak dapat membuat user baru karena tipe data tidak sesuai'),
 
+  // Update User Profile
+  'UPDATE_USER_PROFILE.NOT_CONTAIN_NEEDED_PROPERTY': new InvariantError('tidak dapat mengubah profil user karena properti yang dibutuhkan tidak ada'),
+  'UPDATE_USER_PROFILE.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('tidak dapat mengubah profil user karena tipe data tidak sesuai'),
+
   // Login User
   'USER_LOGIN.NOT_CONTAIN_NEEDED_PROPERTY': new InvariantError('tidak dapat membuat user baru karena properti yang dibutuhkan tidak ada'),
   'USER_LOGIN.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('tidak dapat membuat user baru karena tipe data tidak sesuai'),
@@ -100,6 +104,9 @@ DomainErrorTranslator._directories = {
   // Add Shipment
   'ADD_SHIPMENT.NOT_CONTAIN_NEEDED_PROPERTY': new InvariantError('tidak dapat membuat shipment baru karena properti yang dibutuhkan tidak ada'),
   'ADD_SHIPMENT.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('tidak dapat membuat shipment baru karena tipe data tidak sesuai'),
+
+  // Image
+  'IMAGE.NOT_MEEET_DATA_TYPE_SPECIFICATION': new InvariantError('tidak dapat membuat image baru karena tipe data tidak sesuai'),
 };
 
 module.exports = DomainErrorTranslator;
