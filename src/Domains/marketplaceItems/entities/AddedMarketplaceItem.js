@@ -20,7 +20,7 @@ class AddedMarketplaceItem {
   }
 
   _verifyPayload({ id, name, price, discount, rating, desc, watering, scale, height, type, cover }) {
-    if (!id || !name || !price || discount === undefined || !rating || !desc || !watering || !scale || !height || !type) {
+    if (!id || !name || !price || discount === undefined || !rating || !desc || !type) {
       throw new Error('ADDED_MARKETPLACE_ITEM.NOT_CONTAIN_NEEDED_PROPERTY');
     }
 
@@ -31,9 +31,9 @@ class AddedMarketplaceItem {
       typeof discount !== 'number' ||
       typeof rating !== 'number' ||
       typeof desc !== 'string' ||
-      typeof watering !== 'string' ||
-      typeof scale !== 'string' ||
-      typeof height !== 'string' ||
+      (watering !== null && typeof watering !== 'string') ||
+      (scale !== null && typeof scale !== 'string') ||
+      (height !== null && typeof height !== 'string') ||
       typeof type !== 'string' ||
       (typeof cover !== 'string' && cover !== null)
     ) {
