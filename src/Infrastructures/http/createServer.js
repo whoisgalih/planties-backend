@@ -16,6 +16,7 @@ const shipments = require('../../Interfaces/http/api/shipments');
 const gardenPhotos = require('../../Interfaces/http/api/gardenPhotos');
 const plantPhotos = require('../../Interfaces/http/api/plantPhotos');
 const oxygens = require('../../Interfaces/http/api/oxygens');
+const payments = require('../../Interfaces/http/api/payments');
 
 const createServer = async (container) => {
   const server = Hapi.server({
@@ -97,6 +98,10 @@ const createServer = async (container) => {
     },
     {
       plugin: oxygens,
+      options: { container },
+    },
+    {
+      plugin: payments,
       options: { container },
     },
   ]);
