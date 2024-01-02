@@ -103,6 +103,18 @@ class PlantRepositoryPostgres extends PlantRepository {
       throw new AuthorizationError('Anda bukan pemilik plant ini');
     }
   }
+
+  async getAllPlantsByUserId(user_id) {
+    const query = {
+      // join garden
+      text: 'SELECT plants.id, plants.name, plants.banner, plants.garden_id FROM plants INNER JOIN gardens ON plants.garden_id = gardens.id WHERE gardens.user_id = $1',
+      values: [user_id],
+    };
+
+    const result = await this._pool.query(query);
+
+    return result.rows;
+  }
 }
 
 module.exports = PlantRepositoryPostgres;

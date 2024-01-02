@@ -2,6 +2,7 @@ const AddPlantUseCase = require('../../../../Applications/use_case/AddPlantUseCa
 const GetPlantsByGardenIdUseCase = require('../../../../Applications/use_case/GetPlantsByGardenIdUseCase');
 const GetPlantByIdUseCase = require('../../../../Applications/use_case/GetPlantByIdUseCase');
 const DeletePlantUseCase = require('../../../../Applications/use_case/DeletePlantByIdUseCase');
+const GetPlantsByUserIdUseCase = require('../../../../Applications/use_case/GetPlantsByUserIdUseCase');
 
 class PlantsHandler {
   constructor(container) {
@@ -11,6 +12,7 @@ class PlantsHandler {
     this.getPlantsHandler = this.getPlantsHandler.bind(this);
     this.getPlantByIdHandler = this.getPlantByIdHandler.bind(this);
     this.deletePlantByIdHandler = this.deletePlantByIdHandler.bind(this);
+    this.getPlantsByUserIdHandler = this.getPlantsByUserIdHandler.bind(this);
   }
 
   async postPlantHandler(request, h) {
@@ -83,6 +85,24 @@ class PlantsHandler {
       status: 'success',
       data: {
         plant,
+      },
+    });
+
+    response.code(200);
+    return response;
+  }
+
+  async getPlantsByUserIdHandler(request, h) {
+    const getPlantsByUserIdUseCase = await this._container.getInstance(GetPlantsByUserIdUseCase.name);
+
+    const { id } = request.auth.credentials;
+
+    const plants = await getPlantsByUserIdUseCase.execute({ id });
+
+    const response = h.response({
+      status: 'success',
+      data: {
+        plants,
       },
     });
 
