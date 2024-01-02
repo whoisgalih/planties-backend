@@ -140,6 +140,7 @@ const DeleteAddressByIdUseCase = require('../Applications/use_case/DeleteAddress
 
 // Transaction use case
 const AddTransactionUseCase = require('../Applications/use_case/AddTransactionUseCase');
+const GetTransactionsUseCase = require('../Applications/use_case/GetTransactionsUseCase');
 
 // creating container
 const container = createContainer();
@@ -1349,6 +1350,19 @@ container.register([
         {
           name: 'cartItemRepository',
           internal: CartItemRepository.name,
+        },
+      ],
+    },
+  },
+  {
+    key: GetTransactionsUseCase.name,
+    Class: GetTransactionsUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        {
+          name: 'transactionRepository',
+          internal: TransactionRepository.name,
         },
       ],
     },

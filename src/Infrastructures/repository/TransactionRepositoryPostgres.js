@@ -18,6 +18,17 @@ class TransactionRepositoryPostgres extends TransactionRepository {
     const result = await this._pool.query(query);
     return result.rows[0];
   }
+
+  async getAll(user_id) {
+    const query = {
+      text: 'SELECT * FROM transactions WHERE user_id = $1',
+      values: [user_id],
+    };
+
+    const result = await this._pool.query(query);
+
+    return result.rows;
+  }
 }
 
 module.exports = TransactionRepositoryPostgres;
