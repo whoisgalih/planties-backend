@@ -1,8 +1,12 @@
+const Image = require('../../images/entities/Image');
+
 class AddMarketplaceItem {
   constructor(payload) {
+    payload.cover = payload.cover || null;
+
     this._verifyPayload(payload);
 
-    const { user_id, name, price, discount, rating, desc, watering, scale, height, type } = payload;
+    const { user_id, name, price, discount, rating, desc, watering, scale, height, type, cover } = payload;
 
     this.user_id = user_id;
     this.name = name;
@@ -14,9 +18,10 @@ class AddMarketplaceItem {
     this.scale = scale;
     this.height = height;
     this.type = type;
+    this.cover = cover ? new Image(cover) : null;
   }
 
-  _verifyPayload({ name, price, discount, rating, desc, watering, scale, height, type }) {
+  _verifyPayload({ name, price, discount, rating, desc, watering, scale, height, type, cover }) {
     if (!name || !price || discount === undefined || !rating || !desc || !watering || !scale || !height || !type) {
       throw new Error('ADD_MARKETPLACE_ITEM.NOT_CONTAIN_NEEDED_PROPERTY');
     }
@@ -30,7 +35,8 @@ class AddMarketplaceItem {
       typeof watering !== 'string' ||
       typeof scale !== 'string' ||
       typeof height !== 'string' ||
-      typeof type !== 'string'
+      typeof type !== 'string' ||
+      (cover !== null && typeof cover !== 'string')
     ) {
       throw new Error('ADD_MARKETPLACE_ITEM.NOT_MEET_DATA_TYPE_SPECIFICATION');
     }

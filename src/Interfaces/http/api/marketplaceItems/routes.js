@@ -5,6 +5,9 @@ const routes = (handler) => [
     handler: handler.postMarketplaceItemHandler,
     options: {
       auth: 'planties_jwt',
+      payload: {
+        maxBytes: process.env.MAX_FILE_SIZE,
+      },
     },
   },
   {

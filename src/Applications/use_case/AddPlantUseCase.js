@@ -15,12 +15,18 @@ class AddPlantUseCase {
     await this._gardenRepository.verifyIfGardenExists(addPlant.garden_id);
     await this._gardenRepository.verifyGardenOwner(addPlant.user_id, addPlant.garden_id);
 
-    const { imageUrl, name } = await this._imageRepository.uploadImage(addPlant.banner, 'plant-banner');
+    let imageUrl;
 
-    addPlant.banner = name;
+    if (addPlant.banner) {
+      const { imageUrl: url, name } = await this._imageRepository.uploadImage(addPlant.banner, 'plant-banner');
+      addPlant.banner = name;
+      imageUrl = url;
+    }
 
     const plant = await this._plantRepository.addPlant(addPlant);
-    plant.banner = imageUrl;
+    if (addPlant.banner) {
+      plant.banner = imageUrl;
+    }
 
     plant.photos = [];
 

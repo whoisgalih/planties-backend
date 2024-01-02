@@ -16,10 +16,10 @@ class MarketplaceItemHandler {
   async postMarketplaceItemHandler(request, h) {
     const addMarketplaceItemUseCase = this._container.getInstance(AddMarketplaceItemUseCase.name);
 
-    const { name, price, discount, rating, desc, watering, scale, height, type } = request.payload;
+    const { name, price, discount, rating, desc, watering, scale, height, type, cover } = request.payload;
     const { id: user_id } = request.auth.credentials;
 
-    const addedMarketplaceItem = await addMarketplaceItemUseCase.execute({ name, price, discount, rating, desc, watering, scale, height, user_id, type });
+    const addedMarketplaceItem = await addMarketplaceItemUseCase.execute({ name, price, discount, rating, desc, watering, scale, height, user_id, type, cover });
 
     const response = h.response({
       status: 'success',

@@ -828,6 +828,10 @@ container.register([
           name: 'marketplaceItemRepository',
           internal: MarketplaceItemRepository.name,
         },
+        {
+          name: 'imageRepository',
+          internal: ImageRepository.name,
+        },
       ],
     },
   },
