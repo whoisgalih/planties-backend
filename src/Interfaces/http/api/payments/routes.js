@@ -10,6 +10,24 @@ const routes = (handler) => [
       },
     },
   },
+  {
+    method: 'GET',
+    path: '/payments',
+    handler: handler.getPaymentsHandler,
+  },
+  {
+    method: 'GET',
+    path: '/payments/{id}',
+    handler: handler.getPaymentByIdHandler,
+  },
+  {
+    method: 'DELETE',
+    path: '/payments/{id}',
+    handler: handler.deletePaymentByIdHandler,
+    options: {
+      auth: 'planties_jwt',
+    },
+  },
 ];
 
 module.exports = routes;

@@ -123,6 +123,9 @@ const DeleteShipmentByIdUseCase = require('../Applications/use_case/DeleteShipme
 
 // Payment use case
 const AddPaymentUseCase = require('../Applications/use_case/AddPaymentUseCase');
+const GetPaymentsUseCase = require('../Applications/use_case/GetPaymentsUseCase');
+const GetPaymentByIdUseCase = require('../Applications/use_case/GetPaymentByIdUseCase');
+const DeletePaymentByIdUseCase = require('../Applications/use_case/DeletePaymentByIdUseCase');
 
 // creating container
 const container = createContainer();
@@ -1155,6 +1158,49 @@ container.register([
         {
           name: 'imageRepository',
           internal: ImageRepository.name,
+        },
+      ],
+    },
+  },
+  {
+    key: GetPaymentsUseCase.name,
+    Class: GetPaymentsUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        {
+          name: 'paymentRepository',
+          internal: PaymentRepository.name,
+        },
+      ],
+    },
+  },
+  {
+    key: GetPaymentByIdUseCase.name,
+    Class: GetPaymentByIdUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        {
+          name: 'paymentRepository',
+          internal: PaymentRepository.name,
+        },
+      ],
+    },
+  },
+  {
+    key: DeletePaymentByIdUseCase.name,
+    Class: DeletePaymentByIdUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        {
+          name: 'paymentRepository',
+          internal: PaymentRepository.name,
+        },
+        {
+          name: 'roleRepository',
+          internal: RoleRepository.name,
         },
       ],
     },
