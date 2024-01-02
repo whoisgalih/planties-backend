@@ -27,6 +27,7 @@ const GardenPhotoRepository = require('../Domains/gardenPhotos/GardenPhotoReposi
 const ImageRepository = require('../Domains/images/ImageRepository');
 const PlantPhotoRepository = require('../Domains/plantPhotos/PlantPhotoRepository');
 const PaymentRepository = require('../Domains/payments/PaymentRepository');
+const AddressRepository = require('../Domains/addresses/AddressRepository');
 
 // security
 const PasswordHash = require('../Applications/security/PasswordHash');
@@ -49,6 +50,7 @@ const GardenPhotoRepositoryPostgres = require('./repository/GardenPhotoRepositor
 const ImageRepositoryS3 = require('./repository/ImageRepositoryS3');
 const PlantPhotoRepositoryPostgres = require('./repository/PlantPhotoRepositoryPostgres');
 const PaymentRepositoryPostgres = require('./repository/PaymentRepositoryPostgres');
+const AddressRepositoryPostgres = require('./repository/AddressRepositoryPostgres');
 
 // User use case
 const AddUserUseCase = require('../Applications/use_case/AddUserUseCase');
@@ -126,6 +128,9 @@ const AddPaymentUseCase = require('../Applications/use_case/AddPaymentUseCase');
 const GetPaymentsUseCase = require('../Applications/use_case/GetPaymentsUseCase');
 const GetPaymentByIdUseCase = require('../Applications/use_case/GetPaymentByIdUseCase');
 const DeletePaymentByIdUseCase = require('../Applications/use_case/DeletePaymentByIdUseCase');
+
+// Address use case
+const AddAddressUseCase = require('../Applications/use_case/AddAddressUseCase');
 
 // creating container
 const container = createContainer();
@@ -375,6 +380,20 @@ container.register([
   {
     key: PaymentRepository.name,
     Class: PaymentRepositoryPostgres,
+    parameter: {
+      dependencies: [
+        {
+          concrete: pool,
+        },
+        {
+          concrete: nanoid,
+        },
+      ],
+    },
+  },
+  {
+    key: AddressRepository.name,
+    Class: AddressRepositoryPostgres,
     parameter: {
       dependencies: [
         {
@@ -1201,6 +1220,21 @@ container.register([
         {
           name: 'roleRepository',
           internal: RoleRepository.name,
+        },
+      ],
+    },
+  },
+
+  // Address use case
+  {
+    key: AddAddressUseCase.name,
+    Class: AddAddressUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        {
+          name: 'addressRepository',
+          internal: AddressRepository.name,
         },
       ],
     },

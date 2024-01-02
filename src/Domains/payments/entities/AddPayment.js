@@ -13,7 +13,6 @@ class AddPayment {
   }
 
   _verifyPayload({ name, fee, logo, user_id }) {
-    console.log(name, fee, logo, user_id);
     if (!name || !fee || !logo || !user_id) {
       throw new Error('ADD_PAYMENT.NOT_CONTAIN_NEEDED_PROPERTY');
     }

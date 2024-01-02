@@ -9,7 +9,6 @@ class AddMarketplaceItemUseCase {
   }
 
   async execute(item) {
-    console.log(item);
     const addMarketplaceItem = new AddMarketplaceItem(item);
 
     // check role
