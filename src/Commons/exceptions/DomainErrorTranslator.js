@@ -107,6 +107,10 @@ DomainErrorTranslator._directories = {
 
   // Image
   'IMAGE.NOT_MEEET_DATA_TYPE_SPECIFICATION': new InvariantError('tidak dapat membuat image baru karena tipe data tidak sesuai'),
+
+  // Add Payment
+  'ADD_PAYMENT.NOT_CONTAIN_NEEDED_PROPERTY': new InvariantError('tidak dapat membuat payment baru karena properti yang dibutuhkan tidak ada'),
+  'ADD_PAYMENT.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('tidak dapat membuat payment baru karena tipe data tidak sesuai'),
 };
 
 module.exports = DomainErrorTranslator;

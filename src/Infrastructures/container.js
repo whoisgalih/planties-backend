@@ -26,6 +26,7 @@ const ShipmentRepository = require('../Domains/shipments/ShipmentRepository');
 const GardenPhotoRepository = require('../Domains/gardenPhotos/GardenPhotoRepository');
 const ImageRepository = require('../Domains/images/ImageRepository');
 const PlantPhotoRepository = require('../Domains/plantPhotos/PlantPhotoRepository');
+const PaymentRepository = require('../Domains/payments/PaymentRepository');
 
 // security
 const PasswordHash = require('../Applications/security/PasswordHash');
@@ -47,6 +48,7 @@ const ShipmentRepositoryPostgres = require('./repository/ShipmentRepositoryPostg
 const GardenPhotoRepositoryPostgres = require('./repository/GardenPhotoRepositoryPostgres');
 const ImageRepositoryS3 = require('./repository/ImageRepositoryS3');
 const PlantPhotoRepositoryPostgres = require('./repository/PlantPhotoRepositoryPostgres');
+const PaymentRepositoryPostgres = require('./repository/PaymentRepositoryPostgres');
 
 // User use case
 const AddUserUseCase = require('../Applications/use_case/AddUserUseCase');
@@ -118,6 +120,12 @@ const AddShipmentUseCase = require('../Applications/use_case/AddShipmentUseCase'
 const GetShipmentsUseCase = require('../Applications/use_case/GetShipmentsUseCase');
 const GetShipmentByIdUseCase = require('../Applications/use_case/GetShipmentByIdUseCase');
 const DeleteShipmentByIdUseCase = require('../Applications/use_case/DeleteShipmentByIdUseCase');
+
+// Payment use case
+const AddPaymentUseCase = require('../Applications/use_case/AddPaymentUseCase');
+const GetPaymentsUseCase = require('../Applications/use_case/GetPaymentsUseCase');
+const GetPaymentByIdUseCase = require('../Applications/use_case/GetPaymentByIdUseCase');
+const DeletePaymentByIdUseCase = require('../Applications/use_case/DeletePaymentByIdUseCase');
 
 // creating container
 const container = createContainer();
@@ -360,6 +368,20 @@ container.register([
       dependencies: [
         {
           concrete: pool,
+        },
+      ],
+    },
+  },
+  {
+    key: PaymentRepository.name,
+    Class: PaymentRepositoryPostgres,
+    parameter: {
+      dependencies: [
+        {
+          concrete: pool,
+        },
+        {
+          concrete: nanoid,
         },
       ],
     },
@@ -1113,6 +1135,72 @@ container.register([
         {
           name: 'gardenPhotoRepository',
           internal: GardenPhotoRepository.name,
+        },
+      ],
+    },
+  },
+
+  // Payment use case
+  {
+    key: AddPaymentUseCase.name,
+    Class: AddPaymentUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        {
+          name: 'paymentRepository',
+          internal: PaymentRepository.name,
+        },
+        {
+          name: 'roleRepository',
+          internal: RoleRepository.name,
+        },
+        {
+          name: 'imageRepository',
+          internal: ImageRepository.name,
+        },
+      ],
+    },
+  },
+  {
+    key: GetPaymentsUseCase.name,
+    Class: GetPaymentsUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        {
+          name: 'paymentRepository',
+          internal: PaymentRepository.name,
+        },
+      ],
+    },
+  },
+  {
+    key: GetPaymentByIdUseCase.name,
+    Class: GetPaymentByIdUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        {
+          name: 'paymentRepository',
+          internal: PaymentRepository.name,
+        },
+      ],
+    },
+  },
+  {
+    key: DeletePaymentByIdUseCase.name,
+    Class: DeletePaymentByIdUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        {
+          name: 'paymentRepository',
+          internal: PaymentRepository.name,
+        },
+        {
+          name: 'roleRepository',
+          internal: RoleRepository.name,
         },
       ],
     },
